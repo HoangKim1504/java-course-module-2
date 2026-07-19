@@ -8,14 +8,14 @@
 Sau bài này, học viên có thể:
 
 - Giải thích Spring Boot là gì và khác Spring Framework ở điểm nào
-- Tạo project trên start.spring.io, mở bằng IntelliJ và chạy ứng dụng
+- Tạo project trên [start.spring.io](https://start.spring.io/), mở bằng IntelliJ và chạy ứng dụng
 - Đọc được cấu trúc thư mục, `pom.xml`, `application.properties`
 - Viết controller + trang Thymeleaf Hello World
 - Phân biệt hai cách render Thymeleaf (`@Controller` vs `SpringTemplateEngine`) và biết chọn cách phù hợp
 
 ## Điều kiện tiên quyết
 
-- Đã hoàn thành **Bài 3**: mô hình MVC — Model, View, Controller, Service, luồng request/response ([java_m2_bai3_MVC.md](java_m2_bai3_MVC.md))
+- Đã hoàn thành **Bài 3**: mô hình MVC — Model, View, Controller, Service, luồng request/response ([java_m2_lesson3_MVC.md](https://github.com/HoangKim1504/java-course-module-2/blob/main/syllabus/module-2/java_m2_lesson3_MVC_note.md))
 - Biết Java cơ bản: class, package, annotation cơ bản
 - Đã học HTML (cấu trúc trang web) — hiểu trình duyệt gửi request và nhận HTML
 - Đã cài **JDK 17+** và **IntelliJ IDEA**
@@ -108,19 +108,23 @@ Quarkus, Micronaut, Jakarta EE, Play Framework, Vaadin, Dropwizard, Apache Strut
 
 **Các mục cần lựa chọn:**
 
-| Mục | Gợi ý | Giải thích |
-|-----|---------------|------------|
-| **Project** | Maven | File cấu hình: `pom.xml` |
-| **Language** | Java | |
-| **Spring Boot** | Phiên bản ổn định mới nhất | |
-| **Group** | `vn.demo` | Tên tổ chức — thường dùng domain ngược |
-| **Artifact** | `demo-bai4-springboot` | Tên project / thư mục |
-| **Package name** | `vn.demo` | Package gốc chứa class `main` — **lưu ý kỹ** |
-| **Packaging** | Jar | Ứng dụng độc lập, chạy bằng `main()` |
-| **Java** | 17 hoặc 21 | Phải khớp JDK trên máy |
-| **Dependencies** | **Spring Web**, **Thymeleaf** | Đủ cho bài Hello World |
+| Mục | Gợi ý                         | Giải thích                                                                |
+|-----|-------------------------------|---------------------------------------------------------------------------|
+| **Project** | Maven                         | File cấu hình: `pom.xml`<br/>Dùng cho dự án nhỏ                           |
+| **Language** | Java                          |                                                                           |
+| **Spring Boot** | Phiên bản ổn định mới nhất    | Hiện tại dùng version 4.0.7                                               |
+| **Group** | `vn.demo`                     | Tên tổ chức — thường dùng domain ngược                                    |
+| **Artifact** | `demo-bai4-springboot`        | Tên project / thư mục                                                     |
+| **Package name** | `vn.demo`                     | Package gốc chứa class `main` — **lưu ý kỹ** <br/>Tên đặt đi từ cuối về đầu |
+| **Packaging** | Jar/War đều được              | Ứng dụng độc lập, chạy bằng `main()`                                      |
+| **Java** | 17 hoặc 21                    | Phải khớp JDK trên máy                                                    |
+| **Dependencies** | **Spring Web**, **Thymeleaf** | Đủ cho bài Hello World                                                    |
 
 > Xem thêm dependencies phổ biến tại **mục 4.3** hoặc [Phụ lục — Dependencies](#dependencies-phổ-biến).
+
+**Cách tạo project trên web:**
+
+![Spring Boot project](images/Start Spring Boot project.png)
 
 ### 3.2. Mở project bằng IntelliJ IDEA
 
@@ -136,10 +140,203 @@ src/main/java/vn/demo/
 src/main/resources/
 └── application.properties
 ```
+**Note:**
+1. Nếu có chỉnh version, groupId, artifactId, packaging,... của Spring thì vào file pom.xml để chỉnh, không cần phải tạo lại project mới.
+![File pom.xml](images/File pom.xml.png)
+2. Tạo project mẫu 1 lần trên web là đủ. Nếu cần chỉnh thông số thì vào file pom chỉnh.
+3. File pom.xml là gì?
+    <details>
+    <summary>Giải thích file pom.xml</summary>
+
+    ### File `pom.xml` là gì?
+    
+    `pom.xml` là **tệp cấu hình chính của Maven** trong một dự án Java. `POM` là viết tắt của **Project Object Model**.
+    
+    Nó giống như **"bản khai" của dự án**, cho Maven biết dự án cần gì để **build**, **quản lý thư viện** và **chạy ứng dụng**.
+    
+    ---
+    
+    ### `pom.xml` dùng để làm gì?
+    
+    #### 1. Quản lý thông tin dự án
+    
+    Khai báo tên, phiên bản và định danh của dự án.
+    
+    ```xml
+    <groupId>com.example</groupId>
+    <artifactId>movie-app</artifactId>
+    <version>1.0.0</version>
+    ```
+    
+    **Giải thích:**
+    
+    - **groupId**: Tên tổ chức hoặc package gốc (ví dụ: `com.example`).
+      - **artifactId**: Tên của project.
+      - **version**: Phiên bản của project.
+    
+    ---
+    
+    #### 2. Quản lý thư viện (Dependencies)
+    
+    Đây là chức năng quan trọng nhất của Maven.
+    
+    Ví dụ muốn sử dụng Spring MVC:
+    
+    ```xml
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>6.1.2</version>
+        </dependency>
+    </dependencies>
+    ```
+    
+    Maven sẽ tự động:
+    
+    - Download thư viện.
+      - Download các thư viện phụ thuộc.
+      - Thêm tất cả vào project.
+    
+    ➡️ Không cần tải các file `.jar` thủ công.
+
+    ---
+    #### 3. Chỉ định phiên bản Java
+    
+    Ví dụ:
+    
+    ```xml
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
+    ```
+    
+    Ý nghĩa:
+    
+    - `source`: Phiên bản Java dùng để biên dịch mã nguồn.
+    - `target`: Phiên bản Java mà chương trình sẽ chạy được.
+    
+    Trong ví dụ trên, project được biên dịch bằng **Java 17**.
+    
+    ---
+    
+    #### 4. Quản lý Plugin
+    
+    Plugin giúp Maven thực hiện các công việc như:
+    
+    - Compile source code.
+      - Chạy Unit Test.
+      - Đóng gói thành `.jar` hoặc `.war`.
+      - Deploy ứng dụng.
+    
+    Ví dụ:
+    
+    ```xml
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+    ```
+    
+    ---
+    
+    #### 5. Build Project
+    
+    Khi chạy lệnh:
+    
+    ```bash
+    mvn clean package
+    ```
+    
+    Maven sẽ đọc `pom.xml` để biết:
+    
+    - Compile bằng Java phiên bản nào.
+      - Cần tải những thư viện nào.
+      - Chạy test hay không.
+      - Đóng gói thành file `.jar` hoặc `.war`.
+    
+    ---
+    
+    #### Ví dụ `pom.xml` đơn giản
+    
+    ```xml
+    <project>
+    
+        <modelVersion>4.0.0</modelVersion>
+    
+        <groupId>com.example</groupId>
+        <artifactId>movie-app</artifactId>
+        <version>1.0</version>
+    
+        <properties>
+            <maven.compiler.source>17</maven.compiler.source>
+            <maven.compiler.target>17</maven.compiler.target>
+        </properties>
+    
+        <dependencies>
+    
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>6.1.2</version>
+            </dependency>
+    
+        </dependencies>
+    
+    </project>
+    ```
+    
+    ---
+    
+    ### Maven xử lý `pom.xml` như thế nào?
+    
+    ```text
+    pom.xml
+        │
+        ▼
+    Đọc thông tin project
+        │
+        ▼
+    Download Dependencies
+        │
+        ▼
+    Compile Source Code
+        │
+        ▼
+    Run Tests
+        │
+        ▼
+    Package thành JAR/WAR
+    ```
+    
+    ---
+    
+    ### Tóm tắt
+    
+    | Thành phần | Chức năng |
+    |------------|-----------|
+    | `groupId` | Tên tổ chức hoặc package gốc |
+    | `artifactId` | Tên project |
+    | `version` | Phiên bản project |
+    | `dependencies` | Khai báo các thư viện cần sử dụng |
+    | `properties` | Cấu hình project (ví dụ: phiên bản Java) |
+    | `build` | Cấu hình quá trình build và plugin |
+    
+    ---
+    
+    ### Ghi nhớ
+    
+    > **`pom.xml` là tệp cấu hình của Maven, dùng để quản lý thông tin dự án, thư viện phụ thuộc (dependencies), cấu hình build, plugin và phiên bản Java. Khi thực thi các lệnh Maven, Maven sẽ đọc `pom.xml` để tải thư viện, biên dịch, kiểm thử và đóng gói ứng dụng.**
+       
+</details>
 
 ### 3.3. Run ứng dụng
 
-1. Mở `DemoBai4SpringbootApplication.java`
+1. Mở `DemoLesson4SpringbootApplication.java`
 2. Click **Run** (tam giác xanh) cạnh hàm `main`
 3. Log thành công:
 
@@ -149,6 +346,9 @@ Tomcat started on port 8080 (http)
 ```
 
 - Port mặc định: **8080** — đổi bằng `server.port=8081` trong `application.properties` nếu bị chiếm
+
+Hình chạy server thành công:
+![Start server success](images/Start server success.png)
 
 ### 3.4. Mở trình duyệt kiểm tra
 
@@ -205,7 +405,7 @@ public class DemoBai4SpringbootApplication {
 }
 ```
 
-- `@SpringBootApplication` — entry point, bật autoconfiguration, quét component trong **cùng package và package con**.
+- `@SpringBootApplication` — là annotation, entry point, bật autoconfiguration, quét component trong **cùng package và package con**.
 - `HelloController` phải nằm trong package con của `vn.demo` (vd `vn.demo.basic.controller`) — nếu không Spring **không tìm thấy**.
 
 ### 4.2. Luồng xử lý request (Spring MVC)
