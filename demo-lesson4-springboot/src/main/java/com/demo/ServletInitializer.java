@@ -1,4 +1,4 @@
-package com.demo.demo_lesson4_springboot;
+package com.demo;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
