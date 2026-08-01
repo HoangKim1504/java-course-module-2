@@ -1,7 +1,7 @@
 # Bài 4: Spring Boot cơ bản — Làm quen framework và xây dựng trang web với Thymeleaf
 
 ### Bài học tham khảo
-- [Bài 4: Spring Boot cơ bản — Làm quen framework và xây dựng trang web với Thymeleaf — Github module 2](https://github.com/nguyenvudangkhoa189/t3h-ltv-java-module-2/blob/dev/syllabus/module-2/java_m2_bai4_SpringBoot.md)
+- [Bài 4: Spring Boot cơ bản — Làm quen framework và xây dựng trang web với Thymeleaf — Github module 2](https://github.com/nguyenvudangkhoa189/t3h-ltv-java-module-2/blob/dev/syllabus/module-2/java_m2_lesson4_SpringBoot.md)
 
 ## Mục tiêu bài học
 
@@ -113,9 +113,9 @@ Quarkus, Micronaut, Jakarta EE, Play Framework, Vaadin, Dropwizard, Apache Strut
 | **Project** | Maven                         | File cấu hình: `pom.xml`<br/>Dùng cho dự án nhỏ                           |
 | **Language** | Java                          |                                                                           |
 | **Spring Boot** | Phiên bản ổn định mới nhất    | Hiện tại dùng version 4.0.7                                               |
-| **Group** | `vn.demo`                     | Tên tổ chức — thường dùng domain ngược                                    |
-| **Artifact** | `demo-bai4-springboot`        | Tên project / thư mục                                                     |
-| **Package name** | `vn.demo`                     | Package gốc chứa class `main` — **lưu ý kỹ** <br/>Tên đặt đi từ cuối về đầu |
+| **Group** | `com.demo`                     | Tên tổ chức — thường dùng domain ngược                                    |
+| **Artifact** | `demo-lesson4-springboot`        | Tên project / thư mục                                                     |
+| **Package name** | `com.demo`                     | Package gốc chứa class `main` — **lưu ý kỹ** <br/>Tên đặt đi từ cuối về đầu |
 | **Packaging** | Jar/War đều được              | Ứng dụng độc lập, chạy bằng `main()`                                      |
 | **Java** | 17 hoặc 21                    | Phải khớp JDK trên máy                                                    |
 | **Dependencies** | **Spring Web**, **Thymeleaf** | Đủ cho bài Hello World                                                    |
@@ -134,8 +134,8 @@ Quarkus, Micronaut, Jakarta EE, Play Framework, Vaadin, Dropwizard, Apache Strut
 4. Đợi Maven download dependency (progress bar góc dưới)
 
 ```
-src/main/java/vn/demo/
-└── DemoBai4SpringbootApplication.java   ← class chứa hàm main
+src/main/java/com/demo/
+└── DemoLesson4SpringbootApplication.java   ← class chứa hàm main
 
 src/main/resources/
 └── application.properties
@@ -341,7 +341,7 @@ src/main/resources/
 3. Log thành công:
 
 ```
-Started DemoBai4SpringbootApplication in 2.345 seconds
+Started DemoLesson4SpringbootApplication in 2.345 seconds
 Tomcat started on port 8080 (http)
 ```
 
@@ -367,12 +367,12 @@ Hình chạy server thành công:
 ### 4.1. Cấu trúc thư mục project
 
 ```
-demo-bai4-springboot/
+demo-lesson4-springboot/
 ├── pom.xml
 ├── src/
 │   ├── main/
-│   │   ├── java/vn/demo/
-│   │   │   ├── DemoBai4SpringbootApplication.java   ← hàm main
+│   │   ├── java/com/demo/
+│   │   │   ├── DemoLesson4SpringbootApplication.java   ← hàm main
 │   │   │   └── basic/
 │   │   │       └── controller/
 │   │   │           └── HelloController.java
@@ -392,21 +392,21 @@ demo-bai4-springboot/
 | `src/main/resources/templates` | View Thymeleaf |
 | `src/main/resources/static` | File tĩnh — `/css/style.css` → `static/css/style.css` |
 | `pom.xml` | Dependency + cấu hình Maven |
-| `DemoBai4SpringbootApplication.java` | `@SpringBootApplication` + `main()` |
+| `DemoLesson4SpringbootApplication.java` | `@SpringBootApplication` + `main()` |
 
 **Class khởi động:**
 
 ```java
 @SpringBootApplication
-public class DemoBai4SpringbootApplication {
+public class DemoLesson4SpringbootApplication {
     public static void main(String[] args) {
-        SpringApplication.run(DemoBai4SpringbootApplication.class, args);
+        SpringApplication.run(DemoLesson4SpringbootApplication.class, args);
     }
 }
 ```
 
 - `@SpringBootApplication` — là annotation, entry point, bật autoconfiguration, quét component trong **cùng package và package con**.
-- `HelloController` phải nằm trong package con của `vn.demo` (vd `vn.demo.basic.controller`) — nếu không Spring **không tìm thấy**.
+- `HelloController` phải nằm trong package con của `com.demo` (vd `com.demo.basic.controller`) — nếu không Spring **không tìm thấy**.
 
 ### 4.2. Luồng xử lý request (Spring MVC)
 
@@ -464,6 +464,14 @@ Response: Thymeleaf (render HTML) → DispatcherServlet → Tomcat → Trình du
 
 Tham khảo: [Spring Boot Dependencies — MVN Repository](https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-dependencies/3.5.3)
 
+**Note:**
+- Phần dependency Tomcat này không cần thiết, có thể xoá đi trong file pom.xml
+- Lý do: trong Spring Framework đã có nhúng rồi nên không cần để vào thêm trong file pom.xml
+
+![File pom - delete unnecessary package.png](../../images/File%20pom%20-%20delete%20unnecessary%20package.png)
+
+- Khi sửa file pom.xml thì phải build lại để chạy nội dung mới.
+
 ### 4.4. Package
 
 - **Package** nhóm class theo chức năng — tương ứng thư mục trong `src/main/java`.
@@ -471,8 +479,8 @@ Tham khảo: [Spring Boot Dependencies — MVN Repository](https://mvnrepository
 **Cấu trúc cơ bản (Hello World):**
 
 ```
-vn.demo/
-├── DemoBai4SpringbootApplication.java
+src.main.java.com.demo.demo-lesson4-springboot/
+├── DemoLesson4SpringbootApplication.java
 └── basic/
     └── controller/
         └── HelloController.java
@@ -483,7 +491,7 @@ vn.demo/
 <details>
 <summary>Kiến trúc phân lớp — đã học ở Bài 3</summary>
 
-Xem chi tiết tại [Bài 3 — Kiến trúc phân lớp](java_m2_bai3_MVC.md#7-kiến-trúc-phân-lớp-trong-spring-boot).
+Xem chi tiết tại [Bài 3 — Kiến trúc phân lớp](java_m2_lesson3_MVC_note.md#7-kiến-trúc-phân-lớp-trong-spring-boot).
 
 | Layer | Package | Vai trò |
 |-------|---------|---------|
@@ -508,7 +516,7 @@ File **`.properties`** (hoặc **`.yml`**) — cấu hình tách khỏi code.
 
 ```properties
 server.port=8080
-spring.application.name=demo-bai4-springboot
+spring.application.name=demo-lesson4-springboot
 ```
 
 <details>
@@ -553,7 +561,7 @@ Template engine render HTML phía server — tách view khỏi controller.
 3. Controller trả tên template (không kèm `.html`)
 
 ```java
-package vn.demo.basic.controller;
+package com.demo.basic.controller;
 
 @Controller
 public class HelloController {
@@ -586,28 +594,28 @@ public class HelloController {
 
 ### Yêu cầu
 
-1. Tạo project Spring Boot — có thể đặt **Artifact** theo tên học viên (vd: `nguyenvana`)
+1. Tạo project Spring Boot — có thể đặt **Artifact** (tên của project Maven/Spring Boot) theo tên học viên (vd: `nguyenvana`)
 2. Trang Hello World bằng Thymeleaf, có **dữ liệu động** từ controller
 3. Truy cập được trên trình duyệt qua URL mapping
 
-> **Lưu ý đặt tên:** Demo dùng package gốc `vn.demo` và class `DemoBai4SpringbootApplication`. Nếu Artifact / Package name của bạn khác, cần cập nhật tên class `*Application` và package trong code cho **khớp nhau** — controller phải nằm trong package con của class `*Application` thì Spring mới quét được.
+> **Lưu ý đặt tên:** Demo dùng package gốc `com.demo` và class `DemoLesson4SpringbootApplication`. Nếu Artifact / Package name của bạn khác, cần cập nhật tên class `*Application` và package trong code cho **khớp nhau** — controller phải nằm trong package con của class `*Application` thì Spring mới quét được.
 
 ### Các bước thực hiện
 
 1. Tạo project trên [start.spring.io](https://start.spring.io/) — chọn **Spring Web**, **Thymeleaf** (mục 3.1)
 2. Mở project bằng IntelliJ, kiểm tra JDK (mục 3.2)
-3. Chuột phải package gốc (vd: `vn.demo`) → **New → Package** → nhập `basic.controller`
+3. Chuột phải package gốc (vd: `com.demo`) → **New → Package** → nhập `basic.controller`
 4. Chuột phải package `basic.controller` → **New → Java Class** → `HelloController`
 5. Chuột phải `src/main/resources/templates` → **New → Directory** → `basic` (nếu chưa có)
 6. Chuột phải `templates/basic` → **New → File** → `hello.html`
 7. Viết code controller và HTML (mẫu bên dưới)
-8. Run `DemoBai4SpringbootApplication.java` → mở **http://localhost:8080/hello**
+8. Run `DemoLesson4SpringbootApplication.java` → mở **http://localhost:8080/hello**
 
 ### Cấu trúc project
 
 ```
-src/main/java/vn/demo/
-├── DemoBai4SpringbootApplication.java
+src/main/java/com/demo/
+├── DemoLesson4SpringbootApplication.java
 └── basic/
     └── controller/
         └── HelloController.java
@@ -619,7 +627,7 @@ src/main/resources/templates/basic/
 ### HelloController.java
 
 ```java
-package vn.demo.basic.controller;
+package com.demo.basic.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -659,20 +667,28 @@ public class HelloController {
 
 ### Chạy và kiểm tra
 
-1. Run `DemoBai4SpringbootApplication.java`
+1. Run `DemoLesson4SpringbootApplication.java`
 2. Mở **http://localhost:8080/hello**
 3. Kiểm tra tên và message hiển thị đúng
+![Hello world demo.png](../../images/Hello world demo.png)
+
+### Note phần chú ý khi chạy code:
+1. Khi server đã chạy thành công nhưng mở web không thấy kết quả
+<br>-> Kiểm tra trong file application.properties có phần set port chưa: "server.port=8080"
+2. Khi chạy server thất bại:
+- Kiểm tra cấu trúc folder xem đã để file đúng cấu trúc chưa
+- Xem đường dẫn package trong file đúng chưa
 
 ### Bài mở rộng *(tuỳ chọn)*
 
-Ba mở rộng dưới đây được demo triển khai trong package **`vn.demo.extended`** (`HelloStyleController` + `templates/extended/hello-style.html`):
+Ba mở rộng dưới đây được demo triển khai trong package **`com.demo.extended`** (`HelloStyleController` + `templates/extended/hello-style.html`):
 
 - Redirect trang chủ: `@GetMapping("/")` + `return "redirect:/hello-style";`
 - Thêm file CSS trong `static/css/style.css` và link bằng `th:href="@{/css/style.css}"`
 - Hiển thị thời gian: `model.addAttribute("now", LocalDateTime.now())` + `th:text="${now}"` *(cần `import java.time.LocalDateTime`)*
 
 ```java
-package vn.demo.extended.controller;
+package com.demo.extended.controller;
 
 import java.time.LocalDateTime;
 
@@ -712,7 +728,7 @@ Sau khi làm Hello World (mục 5), ta đã dùng **Cách 1**: `@Controller` + `
 *(Đã thực hành ở mục 4.7 và 5.)*
 
 ```java
-package vn.demo.basic.controller;
+package com.demo.basic.controller;
 
 @Controller
 public class HelloController {
@@ -730,7 +746,7 @@ Controller chỉ trả **tên view logic**; framework lo phần render.
 ### 6.2. Cách 2 — `SpringTemplateEngine.process()` *(render thủ công)*
 
 ```java
-package vn.demo.engine.controller;
+package com.demo.engine.controller;
 
 @RestController
 @RequestMapping("/demo")
@@ -789,7 +805,7 @@ Cách 2 **vẫn chạy được** trên trình duyệt, nhưng **không phải p
 ### 6.5. Enterprise best practice — trang web Thymeleaf
 
 ```java
-package vn.demo.enterprise.controller;
+package com.demo.enterprise.controller;
 
 @Controller
 @RequestMapping("/students")
@@ -871,7 +887,7 @@ HTTP Request
 | **Test unit** | Kiểm tra nội dung template mà không khởi động web server |
 
 ```java
-package vn.demo.engine.service;
+package com.demo.engine.service;
 
 @Service
 public class EmailService {
@@ -915,16 +931,16 @@ public class EmailService {
 
 ## 7. Demo đi kèm — Project mẫu
 
-Toàn bộ ví dụ trong bài được gom vào một project chạy được: [`demo-bai4-springboot/java-springboot-bai4`](../../demo-bai4-springboot/java-springboot-bai4).
+Toàn bộ ví dụ trong bài được gom vào một project chạy được: [`demo-lesson4-springboot/java-springboot-lesson4`](../../demo-lesson4-springboot/java-springboot-lesson4).
 
 Vì project chứa **nhiều ví dụ**, code được **chia package theo từng phần demo** (feature-based). Nhìn vào package là biết minh hoạ mục nào — `basic` ở mục 5 chính là một trong các package này.
 
 | Package | Mục trong bài | Demo gì |
 |---------|---------------|---------|
-| `vn.demo.basic` | Mục 5 | Hello World cơ bản — `@Controller` + Thymeleaf (Cách 1) |
-| `vn.demo.extended` | Mục 5 — Bài mở rộng | Redirect trang chủ + CSS tĩnh + `LocalDateTime` |
-| `vn.demo.engine` | Mục 6.2 / 6.6 | `SpringTemplateEngine.process()` (Cách 2) + email trong Service |
-| `vn.demo.enterprise` | Mục 6.5 | `@Controller` + Service + validation + Post-Redirect-Get |
+| `com.demo.basic` | Mục 5 | Hello World cơ bản — `@Controller` + Thymeleaf (Cách 1) |
+| `com.demo.extended` | Mục 5 — Bài mở rộng | Redirect trang chủ + CSS tĩnh + `LocalDateTime` |
+| `com.demo.engine` | Mục 6.2 / 6.6 | `SpringTemplateEngine.process()` (Cách 2) + email trong Service |
+| `com.demo.enterprise` | Mục 6.5 | `@Controller` + Service + validation + Post-Redirect-Get |
 
 > **Lưu ý:** Với app chỉ có Hello World, một package `controller` là đủ. Demo gom **nhiều ví dụ** nên chia theo feature (`basic`, `extended`, `engine`, `enterprise`) — phần Hello World ở mục 5 chính là package `basic`.
 
@@ -942,7 +958,7 @@ Vì project chứa **nhiều ví dụ**, code được **chia package theo từn
 | `enterprise` | `GET /students` · `/students/{id}` · `/students/new` | `StudentController`, `StudentService` |
 | `enterprise` | `POST /students` → redirect `/students` | `StudentController` (validation + Post-Redirect-Get) |
 
-> Chi tiết cách chạy và bảng URL đầy đủ: xem [README của demo](../../demo-bai4-springboot/java-springboot-bai4/README.md).
+> Chi tiết cách chạy và bảng URL đầy đủ: xem [README của demo](../../demo-lesson4-springboot/java-springboot-lesson4/README.md).
 
 ---
 
@@ -999,4 +1015,4 @@ Vì project chứa **nhiều ví dụ**, code được **chia package theo từn
 - [Spring Boot Documentation](https://docs.spring.io/spring-boot/index.html)
 - [Thymeleaf + Spring](https://www.thymeleaf.org/doc/tutorials/3.1/thymeleafspring.html)
 - [MVN Repository — Spring Boot Dependencies](https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-dependencies/3.5.3)
-- [Project demo bài 4 — chia package theo feature](../../demo-bai4-springboot/java-springboot-bai4/README.md)
+- [Project demo bài 4 — chia package theo feature](../../demo-lesson4-springboot/java-springboot-lesson4/README.md)
