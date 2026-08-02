@@ -1,22 +1,22 @@
 # Demo Bài 4 — Spring Boot cơ bản & Thymeleaf
 
-Project demo cho syllabus `java_m2_bai4_SpringBoot.md`. Code được **chia package theo từng phần demo** để dễ hình dung package nào minh hoạ mục nào trong bài.
+Project demo cho syllabus `java_m2_lesson4_SpringBoot.md`. Code được **chia package theo từng phần demo** để dễ hình dung package nào minh hoạ mục nào trong bài.
 
 | Package | Mục syllabus | Demo gì |
 |---------|--------------|---------|
-| `vn.demo.basic` | Mục 5 | Hello World cơ bản — `@Controller` + Thymeleaf (Cách 1) |
-| `vn.demo.extended` | Mục 5 — Bài mở rộng | Redirect trang chủ + CSS tĩnh + `LocalDateTime` |
-| `vn.demo.engine` | Mục 6 | `SpringTemplateEngine.process()` (Cách 2) + email trong Service |
-| `vn.demo.enterprise` | Mục 6.5 | Enterprise best practice — DI, validation, Post-Redirect-Get |
+| `com.demo.basic` | Mục 5 | Hello World cơ bản — `@Controller` + Thymeleaf (Cách 1) |
+| `com.demo.extended` | Mục 5 — Bài mở rộng | Redirect trang chủ + CSS tĩnh + `LocalDateTime` |
+| `com.demo.engine` | Mục 6 | `SpringTemplateEngine.process()` (Cách 2) + email trong Service |
+| `com.demo.enterprise` | Mục 6.5 | Enterprise best practice — DI, validation, Post-Redirect-Get |
 
 ## Chạy project
 
 ```bash
-cd demo-bai4-springboot/java-springboot-bai4
+cd demo-lesson4-springboot/java-springboot-lesson4
 ./mvnw spring-boot:run
 ```
 
-Hoặc Run `DemoBai4SpringbootApplication` trong IntelliJ.
+Hoặc Run `DemoLesson4SpringbootApplication` trong IntelliJ.
 
 - Port mặc định: **8080**
 - Nếu port bị chiếm: xem hướng dẫn ở [README gốc](../../README.md)
@@ -34,12 +34,12 @@ Hoặc Run `DemoBai4SpringbootApplication` trong IntelliJ.
 ## Cấu trúc project
 
 ```
-java-springboot-bai4/
+java-springboot-lesson4/
 ├── pom.xml
 ├── mvnw
 └── src/main/
     ├── java/vn/demo/
-    │   ├── DemoBai4SpringbootApplication.java   ← entry point (@SpringBootApplication)
+    │   ├── DemoLesson4SpringbootApplication.java   ← entry point (@SpringBootApplication)
     │   │
     │   ├── basic/                               ← Mục 5: Hello World cơ bản
     │   │   └── controller/HelloController.java
@@ -73,7 +73,7 @@ java-springboot-bai4/
                 └── form.html
 ```
 
-> `@SpringBootApplication` nằm ở `vn.demo` nên quét được toàn bộ package con (`basic`, `extended`, `engine`, `enterprise`). View name trả về khớp thư mục template, ví dụ `return "basic/hello"` → `templates/basic/hello.html`.
+> `@SpringBootApplication` nằm ở `com.demo` nên quét được toàn bộ package con (`basic`, `extended`, `engine`, `enterprise`). View name trả về khớp thư mục template, ví dụ `return "basic/hello"` → `templates/basic/hello.html`.
 
 ### Quy ước trong mỗi package
 
@@ -114,6 +114,6 @@ java-springboot-bai4/
 
 ## Liên kết
 
-- Syllabus: [`syllabus/module-2/java_m2_bai4_SpringBoot.md`](../../syllabus/module-2/java_m2_bai4_SpringBoot.md)
+- Syllabus: [`syllabus/module-2/java_m2_lesson4_SpringBoot_note.md`](../../syllabus/module-2/java_m2_lesson4_SpringBoot_note.md)
 - Demo bài 5 (REST API part 1): [`demo-bai5-springmvc/java-springboot-bai5`](../../demo-bai5-springmvc/java-springboot-bai5)
 - Demo bài 6 (Service, Validation, Lombok): [`demo-bai6-springmvc/java-springboot-bai6`](../../demo-bai6-springmvc/java-springboot-bai6)
