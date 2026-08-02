@@ -124,7 +124,7 @@ Quarkus, Micronaut, Jakarta EE, Play Framework, Vaadin, Dropwizard, Apache Strut
 
 **Cách tạo project trên web:**
 
-![Spring Boot project](images/Start Spring Boot project.png)
+![Spring Boot project](images/Lesson 4/Start Spring Boot project.png)
 
 ### 3.2. Mở project bằng IntelliJ IDEA
 
@@ -142,7 +142,7 @@ src/main/resources/
 ```
 **Note:**
 1. Nếu có chỉnh version, groupId, artifactId, packaging,... của Spring thì vào file pom.xml để chỉnh, không cần phải tạo lại project mới.
-![File pom.xml](images/File pom.xml.png)
+![File pom.xml](images/Lesson 4/File pom.xml.png)
 2. Tạo project mẫu 1 lần trên web là đủ. Nếu cần chỉnh thông số thì vào file pom chỉnh.
 3. File pom.xml là gì?
     <details>
@@ -348,7 +348,7 @@ Tomcat started on port 8080 (http)
 - Port mặc định: **8080** — đổi bằng `server.port=8081` trong `application.properties` nếu bị chiếm
 
 Hình chạy server thành công:
-![Start server success](images/Start server success.png)
+![Start server success](images/Lesson 4/Start server success.png)
 
 ### 3.4. Mở trình duyệt kiểm tra
 
@@ -468,7 +468,7 @@ Tham khảo: [Spring Boot Dependencies — MVN Repository](https://mvnrepository
 - Phần dependency Tomcat này không cần thiết, có thể xoá đi trong file pom.xml
 - Lý do: trong Spring Framework đã có nhúng rồi nên không cần để vào thêm trong file pom.xml
 
-![File pom - delete unnecessary package.png](../../images/File%20pom%20-%20delete%20unnecessary%20package.png)
+![File pom - delete unnecessary package.png](../../images/Lesson 4/File%20pom%20-%20delete%20unnecessary%20package.png)
 
 - Khi sửa file pom.xml thì phải build lại để chạy nội dung mới.
 
@@ -670,7 +670,7 @@ public class HelloController {
 1. Run `DemoLesson4SpringbootApplication.java`
 2. Mở **http://localhost:8080/hello**
 3. Kiểm tra tên và message hiển thị đúng
-![Hello world demo.png](../../images/Hello world demo.png)
+<br> ![Hello world demo.png](../../images/Lesson%204/Hello%20world%20demo.png)
 
 ### Note phần chú ý khi chạy code:
 1. Khi server đã chạy thành công nhưng mở web không thấy kết quả
@@ -678,6 +678,8 @@ public class HelloController {
 2. Khi chạy server thất bại:
 - Kiểm tra cấu trúc folder xem đã để file đúng cấu trúc chưa
 - Xem đường dẫn package trong file đúng chưa
+3. Giải thích code html:
+<br>   ![ChatGPT1.png](../../images/Lesson 4/Explain%20Thymeleaf%20code%201-%20ChatGPT.png)
 
 ### Bài mở rộng *(tuỳ chọn)*
 
@@ -714,6 +716,116 @@ public class HelloStyleController {
     }
 }
 ```
+
+```html
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${title}">Hello</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<main class="card">
+    <h1 th:text="${title}">Hello World có CSS</h1>
+    <p>Xin chào, <strong th:text="${studentName}">Tên</strong>!</p>
+    <p th:text="${message}">Message</p>
+    <p class="time">Thời gian server: <span th:text="${now}">now</span></p>
+    <nav>
+        <a th:href="@{/hello}">Trang Hello cơ bản</a>
+        <a th:href="@{/students}">Danh sách sinh viên</a>
+    </nav>
+</main>
+</body>
+</html>
+```
+
+```css
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #f4f6f8;
+    margin: 0;
+    padding: 2rem;
+    color: #1f2937;
+}
+
+.card {
+    max-width: 640px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+h1 {
+    margin-top: 0;
+    color: #0f766e;
+}
+
+.time {
+    color: #475569;
+    font-size: 0.95rem;
+}
+
+nav {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1rem;
+}
+
+nav a {
+    color: #0f766e;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+```
+### Kết quả:
+![Hello World có CSS & thời gian.png](../../images/Lesson 4/Hello%20World%20có%20CSS%20&%20thời%20gian.png)
+
+- Khi nhấn qua trang khác ở đường link Trang Hello cơ bản:
+![Go to Hello world page.png](../../images/Lesson 4/Go%20to%20Hello%20world%20page.png)
+### Note khi làm bài mở rộng trên:
+1. Giải thích phần [return "redirect:/] ở Controller:
+```java
+    @GetMapping("/")
+    public String home() {
+        // Khi mở link http://localhost:8080/
+        // thì sẽ đc tự qua link http://localhost:8080/hello-style
+        return "redirect:/hello-style";
+    }
+```
+2. Lỗi khi làm: Không nhấn được link trên web
+
+Nguyên nhân: sai thuộc tính liên kết trong Thymeleaf
+
+Lỗi
+```html
+<a th:ref="@{/hello}">Hello</a>
+```
+
+Đúng
+```html
+<a th:href="@{/hello}">Hello</a>
+```
+
+Ghi nhớ: Thymeleaf dùng th:href, không có th:ref.
+3. Lỗi khi làm: Sai đường dẫn CSS
+
+Lỗi
+```html
+<link rel="stylesheet" th:href="@{css/style.css}"/>
+```
+
+Đúng
+```html
+<link rel="stylesheet" th:href="@{/css/style.css}"/>
+```
+File phải đặt tại: src/main/resources/static/css/style.css
 
 ---
 
@@ -846,8 +958,129 @@ public class StudentController {
     }
 }
 ```
+**Note kinh nghiệm khi làm phần Enterprise best practice:**
+1. Validation không hoạt động trong Spring Boot
 
-**Nguyên tắc khi đi làm:**
+    Dependency đúng
+    ```xml
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
+    ```
+    Nguyên nhân thường gặp:
+
+   * Chưa dùng `@Valid` trong Controller.
+   * Chưa **Reload Maven Project**.
+   * Dùng sai package (`jakarta` và `javax` không đúng với phiên bản Spring Boot).
+
+    <br>Đúng với Spring Boot 3
+    
+    ```java
+    import jakarta.validation.constraints.*;
+    ```
+   
+   Controller phải có
+
+    ```java
+    @PostMapping("/students")
+    public String save(@Valid StudentForm form,
+                       BindingResult result) {
+        if (result.hasErrors()) {
+            return "form";
+        }
+        return "success";
+    }
+    ```
+    Lưu ý:
+
+   * Gạch **xanh** dưới tiếng Việt trong IntelliJ chỉ là **Typo/Spell Checker**.
+   * Không ảnh hưởng đến việc compile hay chạy chương trình.
+
+
+2. Lỗi truyền `Optional<Student>` sang Thymeleaf
+
+    <br>**Nguyên nhân:**
+    
+    <br>Method `findOptionById()` trả về:
+    
+    ```java
+    Optional<Student>
+    ```
+    
+    Nếu truyền trực tiếp vào `Model`:
+    
+    ```java
+    model.addAttribute("student", studentService.findById(id));
+    ```
+    
+    thì biến `student` trong Thymeleaf thực chất là `Optional<Student>`.
+
+    Trong file HTML:
+    
+    ```html
+    <span th:text="${student.name}">Name</span>
+    ```
+    
+    Thymeleaf cố lấy thuộc tính `name` từ `Optional`, nên báo lỗi:
+    
+    ```text
+    Property or field 'name' cannot be found on object of type 'java.util.Optional'
+    ```
+
+    **Cách sửa**
+    
+    <br>Tạo method `findById()` để lấy `Student` thật từ `Optional`:
+    
+    ```java
+    public Optional<Student> findOptionById(Long id) {
+        return students.stream()
+                .filter(student -> student.getId().equals(id))
+                .findFirst();
+    }
+    
+    public Student findById(Long id) {
+        return findOptionById(id)
+                .orElseThrow(() ->
+                        new NoSuchElementException(
+                                "Student not found with id: " + id));
+    }
+    ```
+    
+    Controller sử dụng `findById()`:
+    
+    ```java
+    @GetMapping("/{id}")
+    public String detail(@PathVariable Long id, Model model) {
+        model.addAttribute("student", studentService.findById(id));
+        return "enterprise/students/detail";
+    }
+    ```
+
+    **Ghi nhớ**
+    
+    > Không truyền `Optional<Student>` trực tiếp sang Thymeleaf.  
+    > Hãy lấy `Student` ra khỏi `Optional` bằng `orElseThrow()` trước khi thêm vào `Model`.
+
+<br>**Kết quả phần Enterprise best practice:**
+
+![List of student.png](../../images/Lesson 4/List%20of%20student.png)
+
+Khi nhấn vào "Chi tiết":
+
+![Detail of student A.png](../../images/Lesson 4/Detail%20of%20student%20A.png)
+
+![Detail of student B.png](../../images/Lesson 4/Detail%20of%20student%20B.png)
+
+Khi nhấn vào "Thêm sinh viên":
+
+![Add student.png](../../images/Lesson%204/Add%20student.png)
+
+![Add student - error1.png](../../images/Lesson%204/Add%20student%20-%20error1.png)
+
+![Add student - error2.png](../../images/Lesson%204/Add%20student%20-%20error2.png)
+
+<br>**Nguyên tắc khi đi làm:**
 
 | Nguyên tắc | Giải thích |
 |------------|------------|
