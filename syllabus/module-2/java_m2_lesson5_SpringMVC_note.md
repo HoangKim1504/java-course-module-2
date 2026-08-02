@@ -1,5 +1,8 @@
 # Bài 5: Spring Boot MVC (part 1) — Xây dựng REST API với Spring Boot
 
+### Bài học tham khảo
+- [Bài 5: Spring Boot MVC (part 1) — Xây dựng REST API với Spring Boot — Github module 2](https://github.com/nguyenvudangkhoa189/t3h-ltv-java-module-2/blob/dev/syllabus/module-2/java_m2_bai5_SpringMVC.md)
+
 ## Mục tiêu bài học
 
 Sau bài này, học viên có thể:
@@ -146,7 +149,7 @@ flowchart TD
 **Ví dụ `@RestController`:**
 
 ```java
-package vn.demo.get.controller;
+package com.demo.get.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -166,7 +169,7 @@ public class ProductQueryController {
 Demo bài này chia package **theo HTTP method** — mỗi method một package, tự chứa `controller` + `dto`. Nhìn tên package biết ngay đang học method nào:
 
 ```
-vn.demo/
+com.demo/
 ├── DemoApplication.java
 ├── get/                              ← §7 GET API
 │   ├── controller/
@@ -329,7 +332,7 @@ Một số hành động không map sạch sang CRUD — dùng **sub-resource d�
 ### 7.2. Ví dụ 1 — Lấy danh sách
 
 ```java
-package vn.demo.get.controller;
+package com.demo.get.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -362,6 +365,10 @@ public class ProductQueryController {
 | `HttpStatus.OK` | Mã 200 — thành công |
 
 **Test Postman:** `GET http://localhost:8080/api/v1/products`
+
+**Kết quả:**
+
+![Postman GET.png](../../images/Lesson%205/Postman%20GET.png)
 
 ### 7.3. Ví dụ 2 — Tham số query (`@RequestParam`)
 
@@ -407,6 +414,24 @@ public ResponseEntity<String> searchProducts(
 
 > **Ghi nhớ:** Tên tham số trong URL phải khớp tên biến (`category`), hoặc dùng `@RequestParam("cat") String category` khi tên URL khác tên biến.
 
+**Kết quả test Postman:**
+
+GET /api/v1/products/search?category=phone -> 200 — brand = null, sortBy = "name":
+
+![Postman search product by category.png](../../images/Lesson%205/Postman%20search%20product%20by%20category.png)
+
+GET /api/v1/products/search?category=phone&brand=Samsung -> 200 — có thêm brand:
+
+![Postman search product by category, brand.png](../../images/Lesson%205/Postman%20search%20product%20by%20category,%20brand.png)
+
+GET /api/v1/products/search?category=laptop&sortBy=price -> 200 — sortBy = "price":
+
+![Postman search product by category, add sortBy.png](../../images/Lesson%205/Postman%20search%20product%20by%20category,%20add%20sortBy.png)
+
+GET /api/v1/products/search -> 400 Bad Request — thiếu category bắt buộc:
+
+![Postman search product.png](../../images/Lesson%205/Postman%20search%20product.png)
+
 #### 7.3.2. So sánh nhanh — bắt buộc vs không bắt buộc
 
 | Loại | Cú pháp | Khi client không gửi |
@@ -435,6 +460,10 @@ public ResponseEntity<String> getProductById(
 - Dùng được cho mọi HTTP method: GET, POST, PUT, PATCH, DELETE
 - Một URL có thể có nhiều path variable: `/api/v1/users/{userId}/orders/{orderId}`
 
+**Kết quả test Postman:**
+
+![Postman product by id.png](../../images/Lesson%205/Postman%20product%20by%20id.png)
+
 ### 7.5. Ví dụ 4 — Trả về object JSON
 
 Khi method trong `@RestController` trả về một **object Java** (hoặc `List`, `Map`, …), Spring Boot tự chuyển object đó thành **JSON** trong response — nhờ thư viện **Jackson** (có sẵn trong `spring-boot-starter-web`).
@@ -448,7 +477,7 @@ Phù hợp khi API **luôn thành công** và status mặc định `200 OK` là 
 **Bước 1 — Tạo class DTO** (`get/dto/NewsDto.java`):
 
 ```java
-package vn.demo.get.dto;
+package com.demo.get.dto;
 
 public class NewsDto {
     private String name;
@@ -471,9 +500,9 @@ public class NewsDto {
 **Bước 2 — Controller trả object trực tiếp** (`get/controller/NewsController.java`):
 
 ```java
-package vn.demo.get.controller;
+package com.demo.get.controller;
 
-import vn.demo.get.dto.NewsDto;
+import com.demo.get.dto.NewsDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -501,13 +530,14 @@ Content-Type: application/json
 
 {"name":"Michael","age":45}
 ```
+![Postman news latest.png](../../images/Lesson%205/Postman%20news%20latest.png)
 
 #### 7.5.2. Cách 2 — Trả `ResponseEntity<object>`
 
 Phù hợp khi cần **chỉ định HTTP status**, **headers**, hoặc trả `404` / `204` tùy logic.
 
 ```java
-import vn.demo.get.dto.NewsDto;
+import com.demo.get.dto.NewsDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -532,6 +562,12 @@ public ResponseEntity<NewsDto> getNewsById(@PathVariable Long id) {
 | `ResponseEntity.ok(news)` | Viết tắt của `new ResponseEntity<>(news, HttpStatus.OK)` |
 
 > **Ghi nhớ:** `ResponseEntity<T>` — `T` là kiểu **body** (ví dụ `NewsDto`, `List<Book>`, `Void` khi không có body).
+
+**Kết quả test Postman:**
+
+![Postman news 1.png](../../images/Lesson%205/Postman%20news%201.png)
+
+![Postman news not found.png](../../images/Lesson%205/Postman%20news%20not%20found.png)
 
 #### 7.5.3. So sánh hai cách
 
@@ -590,9 +626,9 @@ produces = MediaType.APPLICATION_JSON_VALUE
 **Controller đầy đủ** (`get/controller/NewsController.java`):
 
 ```java
-package vn.demo.get.controller;
+package com.demo.get.controller;
 
-import vn.demo.get.dto.NewsDto;
+import com.demo.get.dto.NewsDto;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -616,6 +652,8 @@ public class NewsController {
 > **Ghi nhớ:** `@RestController` vẫn mặc định trả JSON khi return object. Thêm `produces` giúp **khai báo rõ ràng** định dạng response — nên dùng khi viết API để code dễ đọc và client biết chính xác nhận được loại dữ liệu gì.
 
 **Test Postman:** `GET http://localhost:8080/api/v1/news/latest` — kiểm tra tab **Headers** của response có `Content-Type: application/json`.
+
+![Postman tab Headers.png](../../images/Lesson%205/Postman%20tab%20Headers.png)
 
 ### 7.7. Thực hành GET
 
@@ -664,7 +702,7 @@ public ResponseEntity<Void> createProductFromForm(
 Tạo DTO (`post/dto/ProductRequest.java`):
 
 ```java
-package vn.demo.post.dto;
+package com.demo.post.dto;
 
 public class ProductRequest {
     private String name;
@@ -683,7 +721,7 @@ public class ProductRequest {
 Controller:
 
 ```java
-import vn.demo.post.dto.ProductRequest;
+import com.demo.post.dto.ProductRequest;
 
 @PostMapping("/api/v1/products/json")
 public ResponseEntity<ProductRequest> createProductFromBody(
@@ -714,7 +752,7 @@ Header: `Content-Type: application/json`
 **Gợi ý DTO cho bài 2** (`post/dto/GameCreateRequest.java`):
 
 ```java
-package vn.demo.post.dto;
+package com.demo.post.dto;
 
 public class GameCreateRequest {
     private String name;
@@ -759,7 +797,7 @@ public ResponseEntity<Void> updateCategoryFromForm(
 Tạo DTO (`put/dto/CategoryRequest.java`):
 
 ```java
-package vn.demo.put.dto;
+package com.demo.put.dto;
 
 public class CategoryRequest {
     private String name;
@@ -778,7 +816,7 @@ public class CategoryRequest {
 Controller:
 
 ```java
-import vn.demo.put.dto.CategoryRequest;
+import com.demo.put.dto.CategoryRequest;
 
 @PutMapping("/api/v1/categories/{id}/json")
 public ResponseEntity<CategoryRequest> updateCategoryFromBody(
@@ -828,7 +866,7 @@ public ResponseEntity<CategoryRequest> updateCategoryFromBody(
 Tạo DTO chỉ chứa field cần cập nhật (tất cả optional):
 
 ```java
-package vn.demo.patch.dto;
+package com.demo.patch.dto;
 
 public class ProductPatchRequest {
     private String name;
@@ -847,7 +885,7 @@ public class ProductPatchRequest {
 Controller:
 
 ```java
-import vn.demo.patch.dto.ProductPatchRequest;
+import com.demo.patch.dto.ProductPatchRequest;
 
 @PatchMapping("/api/v1/products/{id}")
 public ResponseEntity<ProductPatchRequest> patchProduct(
@@ -1067,7 +1105,7 @@ public ResponseEntity<List<Book>> searchBooks(
 **Gợi ý DTO** (`capstone/dto/`):
 
 ```java
-package vn.demo.capstone.dto;
+package com.demo.capstone.dto;
 
 public class BookRequest {
     private String title;
