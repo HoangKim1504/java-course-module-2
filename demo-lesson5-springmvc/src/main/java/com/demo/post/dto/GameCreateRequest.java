@@ -1,6 +1,6 @@
 package com.demo.post.dto;
 
-public class GameRequest {
+public class GameCreateRequest {
     private String name;
     private double price;
     private String platform;

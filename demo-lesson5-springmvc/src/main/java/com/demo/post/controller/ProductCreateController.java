@@ -1,6 +1,6 @@
 package com.demo.post.controller;
 
-import com.demo.post.dto.ProductRequest;
+import com.demo.post.dto.ProductCreateRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +22,8 @@ public class ProductCreateController {
     }
 
     @PostMapping("/json")
-    public ResponseEntity<ProductRequest> createProductFromBody(
-            @RequestBody ProductRequest request
+    public ResponseEntity<ProductCreateRequest> createProductFromBody(
+            @RequestBody ProductCreateRequest request
     ) {
         System.out.println("Body data: " + request.getName() + ", " + request.getPrice());
         return ResponseEntity.status(HttpStatus.CREATED).body(request);

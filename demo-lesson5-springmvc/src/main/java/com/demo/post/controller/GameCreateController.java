@@ -1,6 +1,6 @@
 package com.demo.post.controller;
 
-import com.demo.post.dto.GameRequest;
+import com.demo.post.dto.GameCreateRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 public class GameCreateController {
 
     @PostMapping("/json")
-    public ResponseEntity<GameRequest> createCategoryFromForm(
-            @RequestBody GameRequest request
+    public ResponseEntity<GameCreateRequest> createCategoryFromForm(
+            @RequestBody GameCreateRequest request
     ) {
         System.out.println("Body data: " + request.getName() + ", " + request.getPrice() + ", " + request.getPlatform());
         return ResponseEntity.status(HttpStatus.CREATED).build();

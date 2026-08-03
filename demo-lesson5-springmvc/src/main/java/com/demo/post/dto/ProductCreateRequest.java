@@ -1,6 +1,6 @@
 package com.demo.post.dto;
 
-public class ProductRequest {
+public class ProductCreateRequest {
     private String name;
     private Double price;
     private String color;
