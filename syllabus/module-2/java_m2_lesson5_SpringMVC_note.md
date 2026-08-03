@@ -1035,6 +1035,8 @@ public ResponseEntity<Void> deleteOrderByQuery(
 
 **Postman:** `DELETE http://localhost:8080/api/v1/orders?id=5`
 
+![Postman DEL order.png](../../images/Lesson%205/Postman%20DEL%20order.png)
+
 ### 11.3. Ví dụ 2 — Xóa theo path variable (khuyến nghị)
 
 ```java
@@ -1048,6 +1050,8 @@ public ResponseEntity<Void> deleteOrderById(
 ```
 
 **Postman:** `DELETE http://localhost:8080/api/v1/orders/5`
+
+![Postman DEL order by id.png](../../images/Lesson%205/Postman%20DEL%20order%20by%20id.png)
 
 ### 11.4. Ví dụ 3 — Xóa với body (tham khảo)
 
@@ -1065,10 +1069,18 @@ public ResponseEntity<Void> deleteOrdersFromBody(
 
 > **Lưu ý:** Trong production, xóa nhiều bản ghi thường dùng endpoint riêng (`POST /batch-delete`) thay vì DELETE kèm body.
 
+![Postman DEL order batch.png](../../images/Lesson%205/Postman%20DEL%20order%20batch.png)
+
 ### 11.5. Thực hành DELETE
 
 1. Tạo `DELETE /api/v1/songs` — nhận `title` (bắt buộc) và `theme` (không bắt buộc) từ **query**. In giá trị.
+
+    <br>![Postman DEL song by title.png](../../images/Lesson%205/Postman%20DEL%20song%20by%20title.png)
+
+
 2. Tạo `DELETE /api/v1/songs/{id}` — xóa theo id trong path. In id ra console.
+
+    <br>![Postman DEL songs by id.png](../../images/Lesson%205/Postman%20DEL%20songs%20by%20id.png)
 
 ---
 
