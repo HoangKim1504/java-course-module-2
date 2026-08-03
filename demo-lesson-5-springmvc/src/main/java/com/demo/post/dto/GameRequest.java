@@ -1,4 +1,4 @@
-package com.demo.put.dto;
+package com.demo.post.dto;
 
 public class GameRequest {
     private String name;

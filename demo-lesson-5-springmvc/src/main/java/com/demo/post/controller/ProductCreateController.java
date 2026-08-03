@@ -1,6 +1,6 @@
-package com.demo.put.controller;
+package com.demo.post.controller;
 
-import com.demo.put.dto.ProductRequest;
+import com.demo.post.dto.ProductRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

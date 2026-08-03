@@ -1,4 +1,4 @@
-package com.demo.put.dto;
+package com.demo.post.dto;
 
 public class ProductRequest {
     private String name;

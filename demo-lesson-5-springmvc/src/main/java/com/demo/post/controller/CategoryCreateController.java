@@ -1,4 +1,4 @@
-package com.demo.put.controller;
+package com.demo.post.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
