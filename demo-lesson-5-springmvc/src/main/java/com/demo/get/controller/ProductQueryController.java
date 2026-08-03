@@ -40,4 +40,5 @@ public class ProductQueryController {
         System.out.println("Id value: " + id);
         return new ResponseEntity<>("Product id: " + id, HttpStatus.OK);
     }
+
 }
