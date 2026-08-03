@@ -658,9 +658,24 @@ public class NewsController {
 ### 7.7. Thực hành GET
 
 1. Tạo `GET /api/v1/products/search` — `category` bắt buộc, `brand` không bắt buộc, `sortBy` có `defaultValue`
+   
+    <br>![Postman search product by category.png](../../images/Lesson%205/Postman%20search%20product%20by%20category.png)
+
+
 2. Tạo `GET /api/v1/users` — trả danh sách tên, ví dụ: `["Sarah", "Mike", "Kim Jong"]`
+
+    <br>![Postman GET users.png](../../images/Lesson%205/Postman%20GET%20users.png)
+
+
 3. Tạo `GET /api/v1/users/{id}` — trả tên user theo id (demo: in log và trả id)
+
+    <br>![Postman user by id.png](../../images/Lesson%205/Postman%20user%20by%20id.png)
+
+
 4. Tạo `GET /api/v1/news/latest` — trả object JSON với `name` và `age`
+
+    <br>![Postman news latest.png](../../images/Lesson%205/Postman%20news%20latest.png)
+
 
 ---
 
@@ -697,6 +712,8 @@ public ResponseEntity<Void> createProductFromForm(
 | `@RequestParam(required = false)` | Tham số không bắt buộc |
 | `@RequestParam(defaultValue = "yellow")` | Giá trị mặc định nếu client không gửi |
 
+![Postman POST user.png](../../images/Lesson%205/Postman%20POST%20user.png)
+
 ### 8.3. Ví dụ 2 — Nhận dữ liệu từ JSON body
 
 Tạo DTO (`post/dto/ProductRequest.java`):
@@ -709,12 +726,29 @@ public class ProductRequest {
     private Double price;
     private String color;
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public Double getPrice() { return price; }
-    public void setPrice(Double price) { this.price = price; }
-    public String getColor() { return color; }
-    public void setColor(String color) { this.color = color; }
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
 }
 ```
 
@@ -736,25 +770,33 @@ public ResponseEntity<ProductRequest> createProductFromBody(
 
 ```json
 {
-  "name": "iPhone 15",
-  "price": 999.0,
-  "color": "black"
+  "name": "Iphone 17 Pro Max",
+  "price": 1300.0,
+  "color": "orange"
 }
 ```
+
+![Postman POST product from body.png](../../images/Lesson%205/Postman%20POST%20product%20from%20body.png)
 
 Header: `Content-Type: application/json`
 
 ### 8.4. Thực hành POST
 
 1. Tạo `POST /api/v1/categories` — nhận `name` (bắt buộc) và `location` (không bắt buộc) từ **form**. In giá trị ra console.
+
+    <br>![Postman POST category.png](../../images/Lesson%205/Postman%20POST%20category.png)
+
+
 2. Tạo `POST /api/v1/games` — nhận `name` (string), `price` (double), `platform` (string) từ **JSON body**. In giá trị ra console.
 
-**Gợi ý DTO cho bài 2** (`post/dto/GameCreateRequest.java`):
+    <br>![Postman POST games.png](../../images/Lesson%205/Postman%20POST%20games.png)
+
+**Gợi ý DTO cho bài 2** (`post/dto/GameRequest.java`):
 
 ```java
 package com.demo.post.dto;
 
-public class GameCreateRequest {
+public class GameRequest {
     private String name;
     private double price;
     private String platform;
