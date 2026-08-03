@@ -834,6 +834,10 @@ public ResponseEntity<Void> updateCategoryFromForm(
 
 **Postman:** `PUT http://localhost:8080/api/v1/categories/1` → Body → x-www-form-urlencoded
 
+![Postman PUT category 1.png](../../images/Lesson%205/Postman%20PUT%20category%201.png)
+
+![Postman PUT category 2.png](../../images/Lesson%205/Postman%20PUT%20category%202.png)
+
 ### 9.3. Ví dụ 2 — Cập nhật qua JSON body
 
 Tạo DTO (`put/dto/CategoryRequest.java`):
@@ -846,12 +850,29 @@ public class CategoryRequest {
     private String description;
     private String status;
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }
 ```
 
@@ -879,11 +900,20 @@ public ResponseEntity<CategoryRequest> updateCategoryFromBody(
   "status": "active"
 }
 ```
+**Test Postman:**
+
+![Postman PUT category json.png](../../images/Lesson%205/Postman%20PUT%20category%20json.png)
 
 ### 9.4. Thực hành PUT
 
 1. Tạo `PUT /api/v1/users/{id}` — nhận `name` (bắt buộc) và `address` (không bắt buộc) từ **form**. In giá trị.
+
+    <br>![Postman PUT user by id.png](../../images/Lesson%205/Postman%20PUT%20user%20by%20id.png)
+
+
 2. Tạo `PUT /api/v1/users/{id}/profile` — nhận `gender` (string), `age` (int), `education` (string) từ **JSON body**. In giá trị.
+
+    <br>![Postman PUT user profile by id.png](../../images/Lesson%205/Postman%20PUT%20user%20profile%20by%20id.png)
 
 ---
 
@@ -915,12 +945,29 @@ public class ProductPatchRequest {
     private Double price;
     private String color;
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public Double getPrice() { return price; }
-    public void setPrice(Double price) { this.price = price; }
-    public String getColor() { return color; }
-    public void setColor(String color) { this.color = color; }
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
 }
 ```
 
@@ -950,10 +997,17 @@ public ResponseEntity<ProductPatchRequest> patchProduct(
 }
 ```
 
+![Postman PATCH product.png](../../images/Lesson%205/Postman%20PATCH%20product.png)
+
 ### 10.3. Thực hành PATCH
 
 1. Tạo `PATCH /api/v1/users/{id}` — nhận body `{"address": "..."}` (có thể thêm `phone`). In các field nhận được.
+
+    <br>![Postman PATCH user by id.png](../../images/Lesson%205/Postman%20PATCH%20user%20by%20id.png)
+
 2. Tạo `PATCH /api/v1/products/{id}` — chỉ cập nhật `price` từ body JSON.
+
+    <br>![Postman PATCH product.png](../../images/Lesson%205/Postman%20PATCH%20product.png)
 
 ---
 
