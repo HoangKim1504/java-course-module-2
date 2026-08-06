@@ -1,5 +1,8 @@
 # Bài 6: Spring Boot MVC (part 2) — Service Layer, Validation, Lombok & HTTP Header
 
+### Bài học tham khảo
+- [Bài 6: Spring Boot MVC (part 2) — Service Layer, Validation, Lombok & HTTP Header — Github module 2](https://github.com/nguyenvudangkhoa189/t3h-ltv-java-module-2/blob/dev/syllabus/module-2/java_m2_bai6_SpringMVC.md)
+
 ## Mục tiêu bài học
 
 Sau bài này, học viên có thể:
@@ -86,8 +89,8 @@ Controllers
 Project demo bài này **chia package theo từng phần (feature-based)** — mỗi phần demo nằm trong một package riêng, bên trong vẫn tách lớp `controller` / `service` / `model` / `repository`. Cách này giúp nhìn package là biết đang demo cho mục nào.
 
 ```
-src/main/java/vn/demo/
-├── DemoBai6SpringmvcApplication.java
+src/main/java/com/demo/
+├── DemoLesson6SpringmvcApplication.java
 ├── servicelayer/        ← mục 1-3: @Service, DI, gọi liên thông Service
 │   ├── controller/      ← AccountController
 │   ├── service/         ← AccountService, OrderService
@@ -119,10 +122,10 @@ src/main/java/vn/demo/
 - Đặt tên theo mẫu `<ĐốiTượng>Service` (ví dụ `AccountService`, `OrderService`).
 
 ```java
-package vn.demo.servicelayer.service;
+package com.demo.servicelayer.service;
 
-import vn.demo.servicelayer.model.Account;
-import vn.demo.servicelayer.repository.AccountRepository;
+import com.demo.servicelayer.model.Account;
+import com.demo.servicelayer.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -311,6 +314,8 @@ Controller  ←→  Service A  ←→  Service B
 
 Test bằng Postman: `GET /api/account/orders?userId=1`
 
+![Postman GET account-orders.png](../../images/Lesson%206/Postman%20GET%20account-orders.png)
+
 ---
 
 ## 4. Lombok
@@ -351,8 +356,13 @@ public class User {
         this.id = id;
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() { 
+        return id;
+    }
+    
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
 ```
 
@@ -476,7 +486,7 @@ Reload Maven sau khi thêm.
 ### 5.3. Model dùng chung cho cả REST API và Thymeleaf
 
 ```java
-package vn.demo.validation.model;
+package com.demo.validation.model;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -501,6 +511,17 @@ public class Account {
     private Integer age;   // dùng Integer (không phải int) để phân biệt "không gửi" vs "gửi 0"
 }
 ```
+**Note:**
+1. Tại sao dùng Integer (không phải int) để phân biệt "không gửi" vs "gửi 0"?
+
+    `Integer` vs `int`
+
+   - `int`: không nhận `null`, mặc định là `0`.
+   - `Integer`: có thể nhận `null`.
+
+    Dùng `Integer` trong Request/DTO để phân biệt:
+   - Không gửi `age` → `null`
+   - Gửi `age = 0` → `0`
 
 > **`@Data` bắt buộc** (hoặc getter/setter thủ công): Jackson cần setter để bind JSON (`@RequestBody`); Thymeleaf cần getter/setter để bind form (`@ModelAttribute`).
 
@@ -537,9 +558,9 @@ flowchart LR
 ### 6.1. Controller
 
 ```java
-package vn.demo.validation.controller;
+package com.demo.validation.controller;
 
-import vn.demo.validation.model.Account;
+import com.demo.validation.model.Account;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -566,7 +587,8 @@ public class FormApiController {
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
         }
-        // TODO: gọi AccountService xử lý đăng ký
+        // TODO:  Mapping DTO → Model trước khi xử lý đăng ký 
+        // TODO: Gọi AccountService xử lý đăng ký
         return ResponseEntity.ok().build();
     }
 }
@@ -594,6 +616,8 @@ public class FormApiController {
 
 → Response `200 OK`
 
+![Postman POST validation 1.png](../../images/Lesson%206/Postman%20POST%20validation%201.png)
+
 **Body không hợp lệ** (thiếu email, password ngắn):
 
 ```json
@@ -616,6 +640,8 @@ public class FormApiController {
 ]
 ```
 
+![Postman POST validation 2.png](../../images/Lesson%206/Postman%20POST%20validation%202.png)
+
 ### 6.3. Lưu ý khi validate REST API
 
 | Điểm | Giải thích |
@@ -624,6 +650,76 @@ public class FormApiController {
 | **HTTP status** | Dữ liệu sai → `400 Bad Request`, không trả `200` kèm lỗi |
 | **Cấu trúc lỗi** | Demo trả `List<String>`; production có thể chuẩn hóa `{ "field": "email", "message": "..." }` |
 | **Global handler** *(nâng cao)* | Dùng `@ControllerAdvice` + `@ExceptionHandler(MethodArgumentNotValidException.class)` để gom xử lý lỗi validation cho mọi API — tránh lặp `if (bindingResult.hasErrors())` |
+
+**Note:**
+
+**1. Cách chuẩn hóa Validation Error**
+
+Thay vì chỉ trả message:
+
+```json
+[
+  "Email không hợp lệ",
+  "Age phải >= 18"
+]
+```
+
+Nên trả cả `field` và `message`:
+
+```json
+[
+  {
+    "field": "email",
+    "message": "Email không hợp lệ"
+  },
+  {
+    "field": "age",
+    "message": "Age phải >= 18"
+  }
+]
+```
+
+### Cách làm
+
+**1. Tạo DTO chứa thông tin lỗi**
+
+```java
+public class ValidationErrorResponse {
+    private String field;
+    private String message;
+}
+```
+
+**2. Kiểm tra validation**
+
+```java
+if (bindingResult.hasErrors()) {
+    List<ValidationErrorResponse> errors = new ArrayList<>();
+
+    for (FieldError error : bindingResult.getFieldErrors()) {
+        errors.add(new ValidationErrorResponse(
+                error.getField(),
+                error.getDefaultMessage()
+        ));
+    }
+
+    return ResponseEntity
+            .badRequest()
+            .body(errors);
+}
+```
+
+### Ghi nhớ
+
+- `bindingResult.hasErrors()` → kiểm tra có lỗi validation.
+- `getFieldErrors()` → lấy danh sách field bị lỗi.
+- `error.getField()` → tên field lỗi (`email`, `age`...).
+- `error.getDefaultMessage()` → nội dung lỗi.
+- Trả `400 Bad Request` khi dữ liệu không hợp lệ.
+
+### Test Postman
+
+![Postman validation message.png](../../images/Lesson%206/Postman%20validation%20message.png)
 
 ---
 
@@ -634,9 +730,9 @@ Với **form HTML**, luồng khác REST API: không trả JSON lỗi mà **rende
 ### 7.1. Controller
 
 ```java
-package vn.demo.validation.controller;
+package com.demo.validation.controller;
 
-import vn.demo.validation.model.Account;
+import com.demo.validation.model.Account;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
