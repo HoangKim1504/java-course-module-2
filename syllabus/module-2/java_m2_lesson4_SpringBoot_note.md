@@ -1093,6 +1093,41 @@ Khi nhấn vào "Thêm sinh viên":
 | **`redirect:` sau POST** | Tránh submit lại form khi F5 (Post-Redirect-Get) |
 | **Validation** | `@Valid` + `BindingResult` trên form HTML |
 
+**Note:**
+1. redirect: sau POST -> Tránh submit lại form khi F5 (Post-Redirect-Get)
+    
+    <br>Sau khi xử lý form thành công, nên dùng:
+    
+    ```java
+    return "redirect:/students";
+    ```
+    
+    Đây là mô hình **Post-Redirect-Get**:
+    
+    ```text
+    POST → Lưu dữ liệu → Redirect → GET
+    ```
+    
+    #### Lợi ích
+    
+    - Tránh submit lại form khi nhấn `F5`.
+      - Tránh lưu dữ liệu trùng.
+      - Chuyển sang một request `GET` mới.
+    
+    #### Lưu ý
+    
+    Nếu validation lỗi:
+    
+    ```java
+    return "students/form";
+    ```
+    
+    Nếu lưu thành công:
+    
+    ```java
+    return "redirect:/students";
+    ```
+
 **Luồng chuẩn trong doanh nghiệp:**
 
 ```
