@@ -890,8 +890,12 @@ private String username;
 ### 7.5. Test trên trình duyệt
 
 1. Mở `http://localhost:8080/register`
+![Thymeleaf validation 1.png](../../images/Lesson%206/Thymeleaf%20validation%201.png)
 2. Submit form trống hoặc dữ liệu sai → trang form hiện lại kèm message đỏ
+![Thymeleaf validation 2.png](../../images/Lesson%206/Thymeleaf%20validation%202.png)
 3. Submit hợp lệ → redirect sang `/register/success`
+![Thymeleaf validation 3.png](../../images/Lesson%206/Thymeleaf%20validation%203.png)
+![Thymeleaf validation 4.png](../../images/Lesson%206/Thymeleaf%20validation%204.png)
 
 > **Post-Redirect-Get:** Sau POST thành công, dùng `redirect:` thay vì `return "success"` trực tiếp — tránh user bấm F5 gửi lại form (đã học ở Bài 4).
 
@@ -935,6 +939,8 @@ public class DemoController {
 ### 9.1. Đọc toàn bộ header
 
 ```java
+package com.demo.header.controller;
+
 @RestController
 public class ProductController {
 
@@ -948,9 +954,15 @@ public class ProductController {
 }
 ```
 
+**Test Postman:**
+
+![Postman GET headers.png](Postman GET HTTP Header on API.png)
+
 ### 9.2. Đọc header cụ thể
 
 ```java
+package com.demo.header.controller;
+
 @GetMapping("/profile")
 public ResponseEntity<String> getProfile(
         @RequestHeader("Authorization") String authorization,
@@ -968,9 +980,11 @@ public ResponseEntity<String> getProfile(
 
 ### 9.3. Test bằng Postman
 
-1. Tạo request `GET /products`
+1. Tạo request `GET /profile`
 2. Tab **Headers** → thêm `Authorization: Bearer demo-token`, `X-Custom-Id: 123`
 3. Quan sát response / console
+
+![Postman GET headers.png](../../images/Lesson%206/Postman%20GET%20headers.png)
 
 > **Bảo mật:** Không `System.out.println` token thật trong production. Xác thực token sẽ học ở bài **Spring Security**.
 
