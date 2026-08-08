@@ -1075,13 +1075,19 @@ flowchart TD
 **Test Postman:**
 
 ![Postman Homework ex2_1.png](../../images/Lesson%206/Postman%20Homework%20ex2_1.png)
-![Postman Homework ex2_2.png](Postman Homework ex2_2.png)
+![Postman Homework ex2_2.png](../../images/Lesson%206/Postman%20Homework%20ex2_2.png)
 
 #### Bài 3 — Validation Thymeleaf
 
 1. Tạo form đăng ký sách tại `GET /books/new` (Thymeleaf)
 2. `POST /books` validate `BookRequest`, hiển thị lỗi trên form nếu sai
 3. Thành công → `redirect:/books/success`
+
+**Test trên web :**
+
+![Web API books-new.png](../../images/Lesson%206/Web%20API%20books-new.png)
+![Web API books-validation.png](../../images/Lesson%206/Web%20API%20books-validation.png)
+![Web API books-success.png](../../images/Lesson%206/Web%20API%20books-success.png)
 
 #### Bài 4 — Header
 
