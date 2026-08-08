@@ -1095,6 +1095,11 @@ flowchart TD
 2. Trả JSON `{ "userId": "...", "message": "Hello" }`
 3. Test thiếu header → lỗi; có header → thành công
 
+**Test Postman:**
+
+![Postman GET Header error.png](../../images/Lesson%206/Postman%20GET%20Header%20error.png)
+![Postman GET Header success.png](../../images/Lesson%206/Postman%20GET%20Header%20success.png)
+
 ### Checklist trước khi nộp bài
 
 - [ ] Service không dùng `new` — inject qua constructor
