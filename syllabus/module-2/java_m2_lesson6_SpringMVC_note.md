@@ -1059,6 +1059,10 @@ flowchart TD
 2. Tạo `ProductController` (`@RestController`) gọi Service qua constructor injection
 3. API `GET /api/v1/products/validate-price?price=100` trả `true`/`false`
 
+**Test Postman:**
+
+![Homework ex1.png](../../images/Lesson%206/Homework%20ex1.png)
+
 #### Bài 2 — Validation REST API
 
 1. Tạo DTO `BookRequest` (`title`, `author`, `price`) với validation:
@@ -1067,6 +1071,9 @@ flowchart TD
    - `price`: `@NotNull`, `@Min(0)`
 2. API `POST /api/v1/books` nhận JSON, trả `201` nếu hợp lệ, `400` + danh sách lỗi nếu không
 3. Test đủ case trên Postman
+
+**Test Postman:**
+
 
 #### Bài 3 — Validation Thymeleaf
 
