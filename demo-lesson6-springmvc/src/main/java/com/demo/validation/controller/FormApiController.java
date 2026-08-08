@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 @RequestMapping("/api/form")
@@ -24,6 +25,7 @@ import java.util.List;
 public class FormApiController {
 
     private final AccountService accountService;
+    private final AtomicLong idSequence = new AtomicLong(1);
 
     @PostMapping("/fill")
     public ResponseEntity<?> fillTheForm(
@@ -54,6 +56,7 @@ public class FormApiController {
 
         //  Mapping DTO → Model
         Account account = new Account();
+        account.setId(idSequence.getAndIncrement());
         account.setUserName(validationAccount.getUsername());
         account.setEmail(validationAccount.getEmail());
         account.setPassword(validationAccount.getPassword());
