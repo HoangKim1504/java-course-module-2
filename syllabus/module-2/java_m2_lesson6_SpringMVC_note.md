@@ -956,7 +956,7 @@ public class ProductController {
 
 **Test Postman:**
 
-![Postman GET headers.png](Postman GET HTTP Header on API.png)
+![Postman GET headers.png](../../images/Lesson%206/Postman%20GET%20HTTP%20Header%20on%20API.png)
 
 ### 9.2. Đọc header cụ thể
 
@@ -1074,6 +1074,8 @@ flowchart TD
 
 **Test Postman:**
 
+![Postman Homework ex2_1.png](../../images/Lesson%206/Postman%20Homework%20ex2_1.png)
+![Postman Homework ex2_2.png](Postman Homework ex2_2.png)
 
 #### Bài 3 — Validation Thymeleaf
 
