@@ -682,7 +682,7 @@ src/main/resources/
 #### Bài 1 — Upload nhiều loại thư mục
 
 1. Thêm API `POST /api/files/upload-avatar` — lưu vào subFolder `"avatars"`
-2. Test Postman — kiểm tra URL `/uploads/avatars/...`
+2. Test Postman — kiểm tra URL `http://localhost:8080/uploads/avatars/...`
 
 ```java
 package com.demo.homework.controller;
@@ -720,6 +720,11 @@ public class AvatarUploadController {
     }
 }
 ```
+
+**Kết quả test Postman:**
+
+![Postman ex1.png](../../images/Lesson%207/Postman%20ex1.png)
+![Avatar upload ex1.png](../../images/Lesson%207/Avatar%20upload%20ex1.png)
 
 #### Bài 2 — Products theo category
 
