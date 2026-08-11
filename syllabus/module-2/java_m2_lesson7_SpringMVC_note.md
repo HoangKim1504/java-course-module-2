@@ -735,7 +735,7 @@ public class AvatarUploadController {
 package com.demo.homework.service;
 
 import com.demo.external.config.DummyJsonProperties;
-import com.fasterxml.jackson.databind.JsonNode;
+import tools.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -761,7 +761,7 @@ public class HomeworkProductService {
 package com.demo.homework.controller;
 
 import com.demo.homework.service.HomeworkProductService;
-import com.fasterxml.jackson.databind.JsonNode;
+import tools.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -779,6 +779,9 @@ public class ProductCategoryController {
     }
 }
 ```
+**Kết quả test Postman:**
+
+![Postman ex2.png](../../images/Lesson%207/Postman%20ex2.png)
 
 ### Checklist nộp bài
 
