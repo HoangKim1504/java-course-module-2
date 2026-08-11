@@ -1,5 +1,8 @@
 # Bài 7: Spring Boot MVC (part 3a) — Upload file & Gọi External API
 
+### Bài học tham khảo
+- [Bài 7: Spring Boot MVC (part 3a) — Upload file & Gọi External API — Github module 2](https://github.com/nguyenvudangkhoa189/t3h-ltv-java-module-2/blob/dev/syllabus/module-2/java_m2_bai7_SpringMVC.md)
+
 ## Mục tiêu bài học
 
 Sau bài này, học viên có thể:
@@ -80,9 +83,9 @@ Thay vì gom tất cả vào `controller` / `service` chung (chia theo layer), b
 
 | Package | Phần | Bên trong |
 |---------|------|-----------|
-| `com.example.demo.upload` | Phần 1 — Upload file | `config` / `controller` / `dto` / `service` |
-| `com.example.demo.external` | Phần 2 — External API | `config` / `controller` / `service` |
-| `com.example.demo.homework` | Bài tập về nhà | `controller` / `service` |
+| `com.demo.upload` | Phần 1 — Upload file | `config` / `controller` / `dto` / `service` |
+| `com.demo.external` | Phần 2 — External API | `config` / `controller` / `service` |
+| `com.demo.homework` | Bài tập về nhà | `controller` / `service` |
 
 > Bài 7 không có package `model` vì dữ liệu API ngoài được đọc bằng `JsonNode`. Package `homework` đứng riêng và **tái dùng** bean dùng chung (`FileStorageService`, `RestClient`, `DummyJsonProperties`) — xem [Phụ lục](#bài-tập).
 
@@ -127,7 +130,7 @@ Tách logic lưu file ra **Service** — Controller chỉ nhận request và tr�
 Đọc đường dẫn upload bằng **`@Value`** — đủ cho bài học; chưa cần `@ConfigurationProperties`.
 
 ```java
-package com.example.demo.upload.service;
+package com.demo.upload.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -151,10 +154,11 @@ public class FileStorageService {
     );
 
     private final Path uploadRoot;
-
+    
+    // "${app.upload.dir}" -> khi upload hình thì sẽ biết được đưa vào folder nào
     public FileStorageService(@Value("${app.upload.dir}") String uploadDir) throws IOException {
         this.uploadRoot = Paths.get(uploadDir).toAbsolutePath().normalize();
-        Files.createDirectories(uploadRoot);
+        Files.createDirectories(uploadRoot); // giúp tạo đường dẫn nếu chưa có
         log.info("Upload root initialized: {}", uploadRoot);
     }
 
@@ -171,19 +175,25 @@ public class FileStorageService {
             throw new IllegalArgumentException("Chỉ chấp nhận ảnh: JPEG, PNG, GIF, WEBP");
         }
 
+        // Đổi tên file gốc để không lấy nhầm hình
         String originalName = Paths.get(file.getOriginalFilename()).getFileName().toString();
         String extension = "";
-        int dot = originalName.lastIndexOf('.');
+        int dot = originalName.lastIndexOf('.'); // tìm dấu . cuối cùng
         if (dot > 0) {
-            extension = originalName.substring(dot);
+            extension = originalName.substring(dot); // VD: extension = ".jpg"
         }
 
-        String savedName = UUID.randomUUID() + extension;
+        // UUID.randomUUID() -> chuỗi được gen ra tự động
+        String savedName = UUID.randomUUID() + extension; // VD: tên mới = chuỗi + ".jpg"
         Path targetDir = uploadRoot.resolve(subFolder);
-        Files.createDirectories(targetDir);
+        Files.createDirectories(targetDir); // giúp tạo đường dẫn nếu chưa có
         Path targetFile = targetDir.resolve(savedName);
 
-        Files.copy(file.getInputStream(), targetFile, StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(
+                file.getInputStream(),                 // dữ liệu file upload
+                targetFile,                            // nơi lưu trên máy
+                StandardCopyOption.REPLACE_EXISTING    // có rồi thì ghi đè
+        );
         String publicUrl = "/uploads/" + subFolder + "/" + savedName;
         log.debug("Stored file: {} → {}", originalName, publicUrl);
         return publicUrl;
@@ -194,7 +204,7 @@ public class FileStorageService {
 ### 1.4. FileUploadResponse — DTO trả về API
 
 ```java
-package com.example.demo.upload.dto;
+package com.demo.upload.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -210,7 +220,7 @@ public class FileUploadResponse {
 ### 1.5. UploadResourceConfig — cho trình duyệt xem được ảnh
 
 ```java
-package com.example.demo.upload.config;
+package com.demo.upload.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -220,24 +230,44 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class UploadResourceConfig implements WebMvcConfigurer {
 
-    @Value("${app.upload.dir}")
+    // @Value("${app.upload.dir}" -> tên đường dẫn phải khớp file application.properties
+    @Value("${app.upload.dir}") 
     private String uploadDir;
-
+    
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:" + uploadDir + "/");
+                .addResourceLocations(
+                        "file:" 
+                                + uploadDir // khi xem trên trình duyệt thì biết lấy hình ở đâu
+                                + "/");
     }
 }
 ```
 
+**Note:**
+
+ResourceHandler cho file upload
+
+- `/uploads/**`: URL public để truy cập file.
+- `file:`: đọc file từ file system của máy.
+- `uploadDir`: thư mục thật chứa file upload.
+- `/**`: cho phép truy cập tất cả file/thư mục con.
+
+Ví dụ:
+`/uploads/avatar.jpg`
+→ `C:/Users/ABC/demo-uploads/avatar.jpg`
+
+Mục đích:
+File upload nằm ngoài source code nhưng vẫn có thể truy cập qua HTTP.
+
 ### 1.6. FileUploadController
 
 ```java
-package com.example.demo.upload.controller;
+package com.demo.upload.controller;
 
-import com.example.demo.upload.dto.FileUploadResponse;
-import com.example.demo.upload.service.FileStorageService;
+import com.demo.upload.dto.FileUploadResponse;
+import com.demo.upload.service.FileStorageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -248,7 +278,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/files")
+@RequestMapping("/api/v1/files")
 public class FileUploadController {
 
     private final FileStorageService fileStorageService;
@@ -256,6 +286,7 @@ public class FileUploadController {
     @PostMapping("/upload")
     public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file) {
         try {
+            // Lưu file vào folder "misc"
             String url = fileStorageService.store(file, "misc");
             return ResponseEntity.ok(new FileUploadResponse(url));
         } catch (IllegalArgumentException e) {
@@ -287,6 +318,13 @@ public class FileUploadController {
 | 4 | Key: `file` — đổi type sang **File** → chọn ảnh |
 | 5 | Send → nhận `200 OK` + JSON `{"url":"/uploads/misc/uuid.jpg"}` |
 | 6 | Mở trình duyệt: `http://localhost:8080/uploads/misc/uuid.jpg` |
+
+- Upload sai loại file:
+![Postman upload file validation.png](../../images/Lesson%207/Postman%20upload%20file%20validation.png)
+
+- Upload thành công và mở file vừa upload trên trình duyệt:
+![Postman upload file success.png](../../images/Lesson%207/Postman%20upload%20file%20success.png)
+![Image link after uploading.png](../../images/Lesson%207/Image%20link%20after%20uploading.png)
 
 ### 1.8. Ghi nhớ cho form HTML *(dùng ở Bài 8)*
 
@@ -331,7 +369,7 @@ Từ **server Java** gửi HTTP request tới dịch vụ khác để lấy ho�
 ### 2.3. RestClientConfig
 
 ```java
-package com.example.demo.external.config;
+package com.demo.external.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -346,11 +384,22 @@ public class RestClientConfig {
     }
 }
 ```
+**Note:**
+
+Giải thích file RestClientConfig:
+
+- `@Configuration`: class chứa cấu hình Spring.
+- `@Bean`: đăng ký object vào Spring Container.
+- `RestClient.Builder`: builder dùng để tạo `RestClient`.
+- `builder.build()`: tạo object `RestClient`.
+- Sau đó có thể inject `RestClient` vào Service.
+- `RestClient`: thường dùng để gọi REST API bên ngoài. 
+- Luồng: `RestClient.Builder` → `build()` → `RestClient` → Spring Container → Service
 
 ### 2.4. DummyJsonProperties
 
 ```java
-package com.example.demo.external.config;
+package com.demo.external.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -364,15 +413,25 @@ public class DummyJsonProperties {
     private String baseUrl = "https://dummyjson.com";
 }
 ```
+**Note:**
+
+Giải thích file DummyJsonProperties:
+
+- `@Data`: Lombok tự tạo getter/setter.
+- `@Component`: đăng ký class vào Spring Container.
+- `@ConfigurationProperties(prefix = "app.external.dummyjson")`:
+  đọc cấu hình từ `application.properties` và map vào class.
+- `base-url` → map vào biến `baseUrl`.
+- `"https://dummyjson.com"` là giá trị mặc định.
 
 ### 2.5. ExternalApiService
 
 **DummyJSON** — API công khai miễn phí để học: [dummyjson.com](https://dummyjson.com/)
 
 ```java
-package com.example.demo.external.service;
+package com.demo.external.service;
 
-import com.example.demo.external.config.DummyJsonProperties;
+import com.demo.external.config.DummyJsonProperties;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -387,10 +446,16 @@ public class ExternalApiService {
     private final RestClient restClient;
     private final DummyJsonProperties dummyJsonProperties;
 
+    // Đoạn code này dùng để gọi API bên ngoài dummyjson.com để lấy danh sách products
     public JsonNode fetchProducts(int limit) {
+        // Tạo URL ban đầu: https://dummyjson.com/products?limit={limit}
         String url = dummyJsonProperties.getBaseUrl() + "/products?limit={limit}";
         log.debug("Fetching products: limit={}", limit);
-        return restClient.get().uri(url, limit).retrieve().body(JsonNode.class);
+        return restClient
+                .get() // Cho biết HTTP method là: GET
+                .uri(url, limit) // Spring sẽ thay: {limit} bằng giá trị của biến limit
+                .retrieve() // Thực hiện request và bắt đầu lấy response từ API
+                .body(JsonNode.class); // Chuyển JSON response thành JsonNode
     }
 
     public JsonNode fetchCategories() {
@@ -409,15 +474,18 @@ public class ExternalApiService {
     }
 }
 ```
+**Note:**
+
+Điểm quan trọng: RestClient chịu trách nhiệm gọi API, DummyJsonProperties chịu trách nhiệm giữ cấu hình URL, còn JsonNode dùng để nhận JSON linh hoạt mà chưa cần tạo DTO cụ thể.
 
 > **Tại sao trả `JsonNode`?** Người mới học chưa cần tạo class mapping phức tạp — trả JSON nguyên bản qua API để quan sát cấu trúc. **Bài 8** tập trung CRUD Thymeleaf với dữ liệu mẫu local — không dùng External API.
 
 ### 2.6. ExternalApiController
 
 ```java
-package com.example.demo.external.controller;
+package com.demo.external.controller;
 
-import com.example.demo.external.service.ExternalApiService;
+import com.demo.external.service.ExternalApiService;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -470,6 +538,45 @@ public class ExternalApiController {
 | 1 user theo id | GET | `http://localhost:8080/api/external/users/1` |
 
 **Quan sát JSON trả về** — làm quen cấu trúc dữ liệu từ hệ thống bên ngoài.
+
+**Kết quả test Postman:**
+1. Danh sách sản phẩm: GET http://localhost:8080/api/external/products
+    <br>![Postman GET external_products.png](../../images/Lesson%207/Postman%20GET%20external_products.png)
+2. Categories: GET http://localhost:8080/api/external/categories
+    <br>![Postman GET external_categories.png](../../images/Lesson%207/Postman%20GET%20external_categories.png)
+3. Danh sách users: GET http://localhost:8080/api/external/users
+    <br>![Postman GET external_users.png](../../images/Lesson%207/Postman%20GET%20external_users.png)
+4. 1 user theo id: GET http://localhost:8080/api/external/users/1
+    <br>![Postman GET external_users_id.png](../../images/Lesson%207/Postman%20GET%20external_users_id.png)
+
+**Node lỗi `RestClient.Builder` khi chạy source:**
+
+Lỗi: Spring không tìm thấy Bean `RestClient.Builder` để inject.
+
+```java
+@Bean
+public RestClient restClient(RestClient.Builder builder) {
+    return builder.build();
+}
+```
+
+Nguyên nhân: project hiện tại không có `RestClient.Builder` Bean tương ứng.
+
+Cách sửa: tự tạo `RestClient`, không inject `Builder`.
+
+```java
+@Configuration
+public class RestClientConfig {
+
+    @Bean
+    public RestClient restClient() {
+      return RestClient.builder().build();
+    }
+}
+```
+
+→ Sau đó Spring tạo `RestClient` Bean và có thể inject vào Service bình thường.
+
 
 ### 2.8. DummyJSON không phải database
 
@@ -570,7 +677,7 @@ src/main/resources/
 
 ### Bài tập
 
-> Code bài tập đặt trong package riêng **`com.example.demo.homework`** để tách biệt với phần demo chính. Bài tập **tái dùng** các bean dùng chung: `FileStorageService` (phần upload), `RestClient` + `DummyJsonProperties` (phần external).
+> Code bài tập đặt trong package riêng **`com.demo.homework`** để tách biệt với phần demo chính. Bài tập **tái dùng** các bean dùng chung: `FileStorageService` (phần upload), `RestClient` + `DummyJsonProperties` (phần external).
 
 #### Bài 1 — Upload nhiều loại thư mục
 
@@ -578,10 +685,10 @@ src/main/resources/
 2. Test Postman — kiểm tra URL `/uploads/avatars/...`
 
 ```java
-package com.example.demo.homework.controller;
+package com.demo.homework.controller;
 
-import com.example.demo.upload.dto.FileUploadResponse;
-import com.example.demo.upload.service.FileStorageService;
+import com.demo.upload.dto.FileUploadResponse;
+import com.demo.upload.service.FileStorageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -620,9 +727,9 @@ public class AvatarUploadController {
 2. API `GET /api/external/products/category/{name}` — test với `smartphones`
 
 ```java
-package com.example.demo.homework.service;
+package com.demo.homework.service;
 
-import com.example.demo.external.config.DummyJsonProperties;
+import com.demo.external.config.DummyJsonProperties;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -646,9 +753,9 @@ public class HomeworkProductService {
 ```
 
 ```java
-package com.example.demo.homework.controller;
+package com.demo.homework.controller;
 
-import com.example.demo.homework.service.HomeworkProductService;
+import com.demo.homework.service.HomeworkProductService;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
