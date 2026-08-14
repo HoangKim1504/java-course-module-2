@@ -1,5 +1,8 @@
 # Bài 8: Spring Boot MVC (part 3b) — Thymeleaf CRUD User + Search + Pagination + Upload Avatar
 
+### Bài học tham khảo
+- [Bài 8: Spring Boot MVC (part 3b) — Thymeleaf CRUD User + Search + Pagination — Github module 2](https://github.com/nguyenvudangkhoa189/t3h-ltv-java-module-2/blob/dev/syllabus/module-2/java_m2_bai8_SpringMVC.md)
+
 ## Mục tiêu bài học
 
 Sau bài này, học viên có thể:
@@ -36,7 +39,7 @@ Sau bài này, học viên có thể:
 </dependency>
 ```
 
-> **Ghi chú:** Bài này **mở rộng project Bài 7** — giữ `FileStorageService` + `UploadResourceConfig`, thêm `UserForm`, `UserPage`, `UserService`, `HomeController`, `UserViewController`, templates. **Không dùng External API** — dữ liệu test tạo sẵn trong code (package `vn.demo`).
+> **Ghi chú:** Bài này **mở rộng project Bài 7** — giữ `FileStorageService` + `UploadResourceConfig`, thêm `UserForm`, `UserPage`, `UserService`, `HomeController`, `UserViewController`, templates. **Không dùng External API** — dữ liệu test tạo sẵn trong code (package `com.demo`).
 
 ## Nội dung
 
@@ -238,7 +241,7 @@ sequenceDiagram
 ### 3.5. Cấu trúc project (bổ sung sau Bài 7)
 
 ```
-src/main/java/vn/demo/
+src/main/java/com/demo/
 ├── ... (giữ nguyên từ Bài 7: config/UploadResourceConfig, service/FileStorageService)
 ├── model/
 │   └── UserForm.java                  ← MỚI
@@ -283,7 +286,7 @@ src/main/resources/
 
 - Phương thức tiện ích `getFullName()` → ghép `firstName + lastName` để hiển thị.
 
-> **Xem code đầy đủ:** [`src/main/java/vn/demo/model/UserForm.java`](../../demo-bai8-springmvc/java-springboot-bai8/src/main/java/vn/demo/model/UserForm.java)
+> **Xem code đầy đủ:** [`src/main/java/com/demo/model/UserForm.java`](../../demo-lesson8-springmvc/src/main/java/com/demo/model/UserForm.java)
 
 ### 4.2. `UserPage.java` — DTO kết quả phân trang
 
@@ -299,7 +302,7 @@ src/main/resources/
 | `totalPages` | Tổng số trang |
 | `hasPrevious()` / `hasNext()` | Có trang trước / trang sau không (cho nút « Trước / Sau ») |
 
-> **Xem code đầy đủ:** [`src/main/java/vn/demo/dto/UserPage.java`](../../demo-bai8-springmvc/java-springboot-bai8/src/main/java/vn/demo/dto/UserPage.java)
+> **Xem code đầy đủ:** [`src/main/java/com/demo/dto/UserPage.java`](../../demo-lesson8-springmvc/src/main/java/com/demo/dto/UserPage.java)
 
 ---
 
@@ -335,7 +338,78 @@ src/main/resources/
 4. Cắt `subList(fromIndex, toIndex)` để lấy đúng user của trang.
 5. Đóng gói tất cả vào `UserPage` trả về cho Controller.
 
-> **Xem code đầy đủ:** [`src/main/java/vn/demo/service/UserService.java`](../../demo-bai8-springmvc/java-springboot-bai8/src/main/java/vn/demo/service/UserService.java) *(có Javadoc giải thích từng hàm)*
+> **Xem code đầy đủ:** [`src/main/java/com/demo/service/UserService.java`](../../demo-lesson8-springmvc/src/main/java/com/demo/service/UserService.java) *(có Javadoc giải thích từng hàm)*
+
+**Note:**
+1. Phân trang: `safePage`, `fromIndex` và `toIndex`
+
+    <br>`safePage`
+    ```java
+    int safePage = Math.max(page, 1);
+    ```
+
+   - Đảm bảo `page` không nhỏ hơn `1`.
+   - Nếu `page = 0` hoặc `-1` → `safePage = 1`.
+   
+   <br>`fromIndex`
+    ```java
+    int fromIndex = (safePage - 1) * pageSize;
+    ```
+   - Tính vị trí bắt đầu lấy dữ liệu của trang.
+   - Vì page bắt đầu từ `1`, nhưng index của List bắt đầu từ `0`.
+
+   <br>Ví dụ `pageSize = 5`:
+
+    ```text
+    Page 1 → fromIndex = 0
+    Page 2 → fromIndex = 5
+    Page 3 → fromIndex = 10
+    ```
+
+    Công thức:
+    
+    ```text
+    fromIndex = (page - 1) * pageSize
+    ```
+
+    `toIndex`
+
+    ```java
+    int toIndex = Math.min(fromIndex + pageSize, totalItems);
+    ```
+
+   - Tính vị trí kết thúc của trang.
+   - `Math.min(...)` giúp `toIndex` không vượt quá `totalItems`.
+   - Hữu ích khi trang cuối có ít item hơn `pageSize`.
+
+    <br>Ví dụ:
+    ```text
+    fromIndex = 10
+    pageSize = 5
+    totalItems = 12
+    
+    toIndex = 12
+    ```
+    Thường dùng:
+    ```java
+    list.subList(fromIndex, toIndex);
+    ```
+
+    > `fromIndex` được lấy, `toIndex` không được lấy.
+
+2. Vì sao dùng Locale.ROOT?
+- Locale.ROOT giúp việc chuyển chữ hoa → chữ thường ổn định, không phụ thuộc ngôn ngữ của máy/server.
+- Thường dùng khi tìm kiếm không phân biệt hoa thường:
+    ```java
+    name.toLowerCase(Locale.ROOT).contains(lower);
+    ```
+- Ví dụ:
+  ```java
+  query = "JAVA"
+  name  = "Java Spring Boot"
+  ```
+  → vẫn tìm thấy
+- Locale.ROOT phù hợp khi xử lý chuỗi kỹ thuật, tìm kiếm, so sánh dữ liệu không phụ thuộc ngôn ngữ.
 
 ---
 
@@ -345,7 +419,7 @@ src/main/resources/
 
 **Mục đích:** mở `http://localhost:8080/` tự nhảy sang danh sách user. Chỉ có 1 hàm `home()` trả về `"redirect:/users"`.
 
-> **Xem code đầy đủ:** [`src/main/java/vn/demo/controller/HomeController.java`](../../demo-bai8-springmvc/java-springboot-bai8/src/main/java/vn/demo/controller/HomeController.java)
+> **Xem code đầy đủ:** [`src/main/java/com/demo/controller/HomeController.java`](../../demo-lesson8-springmvc/src/main/java/com/demo/controller/HomeController.java)
 
 ### 6.1. `UserViewController.java`
 
@@ -369,7 +443,7 @@ src/main/resources/
 - Upload avatar (nếu có file): gọi `fileStorageService.store(avatar, "avatars")`, lỗi định dạng/IO → báo `uploadError`.
 - Sau thao tác ghi thành công → `redirect` + flash message (xem mục 6.3 PRG).
 
-> **Xem code đầy đủ:** [`src/main/java/vn/demo/controller/UserViewController.java`](../../demo-bai8-springmvc/java-springboot-bai8/src/main/java/vn/demo/controller/UserViewController.java) *(có Javadoc cho từng handler)*
+> **Xem code đầy đủ:** [`src/main/java/com/demo/controller/UserViewController.java`](../../demo-lesson8-springmvc/src/main/java/com/demo/controller/UserViewController.java) *(có Javadoc cho từng handler)*
 
 ### 6.2. Tìm kiếm & phân trang trong `list()`
 
@@ -417,7 +491,7 @@ Tất cả template đặt trong `src/main/resources/templates/`. Dưới đây 
 | `users/detail.html` | Trang chi tiết 1 user | `th:text`, `th:src`, `th:href` |
 | `users/not-found.html` | Trang báo không tìm thấy user | (HTML tĩnh + `th:replace`) |
 
-> **Xem toàn bộ template:** [`src/main/resources/templates/`](../../demo-bai8-springmvc/java-springboot-bai8/src/main/resources/templates)
+> **Xem toàn bộ template:** [`src/main/resources/templates/`](../../demo-lesson8-springmvc/src/main/resources/templates)
 
 ### 7.1. `templates/fragments/layout.html`
 
@@ -558,7 +632,7 @@ Tất cả template đặt trong `src/main/resources/templates/`. Dưới đây 
 - `th:field="*{email}"` tự sinh `name`, `id`, `value` và đổ giá trị 2 chiều.
 - `th:action` đổi URL theo `isEdit`: sửa → `POST /users/{id}`, tạo → `POST /users`.
 
-> **Xem code đầy đủ (đủ 4 field + ảnh hiện tại):** [`templates/users/form.html`](../../demo-bai8-springmvc/java-springboot-bai8/src/main/resources/templates/users/form.html)
+> **Xem code đầy đủ (đủ 4 field + ảnh hiện tại):** [`templates/users/form.html`](../../demo-lesson8-springmvc/src/main/resources/templates/users/form.html)
 
 ### 7.4. `templates/users/detail.html`
 
@@ -571,19 +645,19 @@ Tất cả template đặt trong `src/main/resources/templates/`. Dưới đây 
 <li>Email: <span th:text="${user.email}"></span></li>
 ```
 
-> **Xem code đầy đủ:** [`templates/users/detail.html`](../../demo-bai8-springmvc/java-springboot-bai8/src/main/resources/templates/users/detail.html)
+> **Xem code đầy đủ:** [`templates/users/detail.html`](../../demo-lesson8-springmvc/src/main/resources/templates/users/detail.html)
 
 ### 7.5. `templates/users/not-found.html`
 
 **Mục đích:** trang thân thiện khi truy cập id không tồn tại (UX tốt hơn stack trace). Chỉ là HTML tĩnh + dùng lại layout qua `th:replace`.
 
-> **Xem code đầy đủ:** [`templates/users/not-found.html`](../../demo-bai8-springmvc/java-springboot-bai8/src/main/resources/templates/users/not-found.html)
+> **Xem code đầy đủ:** [`templates/users/not-found.html`](../../demo-lesson8-springmvc/src/main/resources/templates/users/not-found.html)
 
 ### 7.6. `static/css/users.css`
 
 **Mục đích:** CSS thuần định dạng bảng, avatar tròn, toolbar tìm kiếm, thanh phân trang, form. Không ảnh hưởng logic — học viên có thể tùy biến.
 
-> **Xem code đầy đủ:** [`static/css/users.css`](../../demo-bai8-springmvc/java-springboot-bai8/src/main/resources/static/css/users.css)
+> **Xem code đầy đủ:** [`static/css/users.css`](../../demo-lesson8-springmvc/src/main/resources/static/css/users.css)
 
 ---
 
