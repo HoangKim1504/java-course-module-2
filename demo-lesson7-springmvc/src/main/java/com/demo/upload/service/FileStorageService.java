@@ -24,7 +24,7 @@ public class FileStorageService {
     private final Path uploadRoot;
 
     // "${app.upload.dir}" -> khi upload hình thì sẽ biết được đưa vào folder nào
-    public FileStorageService(@Value("${app.upload.dir") String uploadDir) throws IOException {
+    public FileStorageService(@Value("${app.upload.dir}") String uploadDir) throws IOException {
         this.uploadRoot = Paths.get(uploadDir).toAbsolutePath().normalize();
         Files.createDirectories(uploadRoot); // giúp tạo đường dẫn nếu chưa có
         log.info("Upload root initialized: {}", uploadRoot);
