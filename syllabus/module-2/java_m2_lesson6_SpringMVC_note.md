@@ -314,7 +314,7 @@ Controller  ←→  Service A  ←→  Service B
 
 Test bằng Postman: `GET /api/account/orders?userId=1`
 
-![Postman GET account-orders.png](../../images/Lesson%206/Postman%20GET%20account-orders.png)
+![Postman GET account-orders.png](../images/Lesson%206/Postman%20GET%20account-orders.png)
 
 ---
 
@@ -616,7 +616,7 @@ public class FormApiController {
 
 → Response `200 OK`
 
-![Postman POST validation 1.png](../../images/Lesson%206/Postman%20POST%20validation%201.png)
+![Postman POST validation 1.png](../images/Lesson%206/Postman%20POST%20validation%201.png)
 
 **Body không hợp lệ** (thiếu email, password ngắn):
 
@@ -640,7 +640,7 @@ public class FormApiController {
 ]
 ```
 
-![Postman POST validation 2.png](../../images/Lesson%206/Postman%20POST%20validation%202.png)
+![Postman POST validation 2.png](../images/Lesson%206/Postman%20POST%20validation%202.png)
 
 ### 6.3. Lưu ý khi validate REST API
 
@@ -719,7 +719,7 @@ if (bindingResult.hasErrors()) {
 
 ### Test Postman
 
-![Postman validation message.png](../../images/Lesson%206/Postman%20validation%20message.png)
+![Postman validation message.png](../images/Lesson%206/Postman%20validation%20message.png)
 
 ---
 
@@ -890,12 +890,12 @@ private String username;
 ### 7.5. Test trên trình duyệt
 
 1. Mở `http://localhost:8080/register`
-![Thymeleaf validation 1.png](../../images/Lesson%206/Thymeleaf%20validation%201.png)
+![Thymeleaf validation 1.png](../images/Lesson%206/Thymeleaf%20validation%201.png)
 2. Submit form trống hoặc dữ liệu sai → trang form hiện lại kèm message đỏ
-![Thymeleaf validation 2.png](../../images/Lesson%206/Thymeleaf%20validation%202.png)
+![Thymeleaf validation 2.png](../images/Lesson%206/Thymeleaf%20validation%202.png)
 3. Submit hợp lệ → redirect sang `/register/success`
-![Thymeleaf validation 3.png](../../images/Lesson%206/Thymeleaf%20validation%203.png)
-![Thymeleaf validation 4.png](../../images/Lesson%206/Thymeleaf%20validation%204.png)
+![Thymeleaf validation 3.png](../images/Lesson%206/Thymeleaf%20validation%203.png)
+![Thymeleaf validation 4.png](../images/Lesson%206/Thymeleaf%20validation%204.png)
 
 > **Post-Redirect-Get:** Sau POST thành công, dùng `redirect:` thay vì `return "success"` trực tiếp — tránh user bấm F5 gửi lại form (đã học ở Bài 4).
 
@@ -956,7 +956,7 @@ public class ProductController {
 
 **Test Postman:**
 
-![Postman GET headers.png](../../images/Lesson%206/Postman%20GET%20HTTP%20Header%20on%20API.png)
+![Postman GET headers.png](../images/Lesson%206/Postman%20GET%20HTTP%20Header%20on%20API.png)
 
 ### 9.2. Đọc header cụ thể
 
@@ -984,7 +984,7 @@ public ResponseEntity<String> getProfile(
 2. Tab **Headers** → thêm `Authorization: Bearer demo-token`, `X-Custom-Id: 123`
 3. Quan sát response / console
 
-![Postman GET headers.png](../../images/Lesson%206/Postman%20GET%20headers.png)
+![Postman GET headers.png](../images/Lesson%206/Postman%20GET%20headers.png)
 
 > **Bảo mật:** Không `System.out.println` token thật trong production. Xác thực token sẽ học ở bài **Spring Security**.
 
@@ -1061,7 +1061,7 @@ flowchart TD
 
 **Test Postman:**
 
-![Homework ex1.png](../../images/Lesson%206/Homework%20ex1.png)
+![Homework ex1.png](../images/Lesson%206/Homework%20ex1.png)
 
 #### Bài 2 — Validation REST API
 
@@ -1074,8 +1074,8 @@ flowchart TD
 
 **Test Postman:**
 
-![Postman Homework ex2_1.png](../../images/Lesson%206/Postman%20Homework%20ex2_1.png)
-![Postman Homework ex2_2.png](../../images/Lesson%206/Postman%20Homework%20ex2_2.png)
+![Postman Homework ex2_1.png](../images/Lesson%206/Postman%20Homework%20ex2_1.png)
+![Postman Homework ex2_2.png](../images/Lesson%206/Postman%20Homework%20ex2_2.png)
 
 #### Bài 3 — Validation Thymeleaf
 
@@ -1085,9 +1085,9 @@ flowchart TD
 
 **Test trên web :**
 
-![Web API books-new.png](../../images/Lesson%206/Web%20API%20books-new.png)
-![Web API books-validation.png](../../images/Lesson%206/Web%20API%20books-validation.png)
-![Web API books-success.png](../../images/Lesson%206/Web%20API%20books-success.png)
+![Web API books-new.png](../images/Lesson%206/Web%20API%20books-new.png)
+![Web API books-validation.png](../images/Lesson%206/Web%20API%20books-validation.png)
+![Web API books-success.png](../images/Lesson%206/Web%20API%20books-success.png)
 
 #### Bài 4 — Header
 
@@ -1097,8 +1097,8 @@ flowchart TD
 
 **Test Postman:**
 
-![Postman GET Header error.png](../../images/Lesson%206/Postman%20GET%20Header%20error.png)
-![Postman GET Header success.png](../../images/Lesson%206/Postman%20GET%20Header%20success.png)
+![Postman GET Header error.png](../images/Lesson%206/Postman%20GET%20Header%20error.png)
+![Postman GET Header success.png](../images/Lesson%206/Postman%20GET%20Header%20success.png)
 
 ### Checklist trước khi nộp bài
 

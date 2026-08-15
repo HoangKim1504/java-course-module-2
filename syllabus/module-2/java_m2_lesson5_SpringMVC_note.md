@@ -368,7 +368,7 @@ public class ProductQueryController {
 
 **Kết quả:**
 
-![Postman GET.png](../../images/Lesson%205/Postman%20GET.png)
+![Postman GET.png](../images/Lesson%205/Postman%20GET.png)
 
 ### 7.3. Ví dụ 2 — Tham số query (`@RequestParam`)
 
@@ -418,19 +418,19 @@ public ResponseEntity<String> searchProducts(
 
 GET /api/v1/products/search?category=phone -> 200 — brand = null, sortBy = "name":
 
-![Postman search product by category.png](../../images/Lesson%205/Postman%20search%20product%20by%20category.png)
+![Postman search product by category.png](../images/Lesson%205/Postman%20search%20product%20by%20category.png)
 
 GET /api/v1/products/search?category=phone&brand=Samsung -> 200 — có thêm brand:
 
-![Postman search product by category, brand.png](../../images/Lesson%205/Postman%20search%20product%20by%20category,%20brand.png)
+![Postman search product by category, brand.png](../images/Lesson%205/Postman%20search%20product%20by%20category,%20brand.png)
 
 GET /api/v1/products/search?category=laptop&sortBy=price -> 200 — sortBy = "price":
 
-![Postman search product by category, add sortBy.png](../../images/Lesson%205/Postman%20search%20product%20by%20category,%20add%20sortBy.png)
+![Postman search product by category, add sortBy.png](../images/Lesson%205/Postman%20search%20product%20by%20category,%20add%20sortBy.png)
 
 GET /api/v1/products/search -> 400 Bad Request — thiếu category bắt buộc:
 
-![Postman search product.png](../../images/Lesson%205/Postman%20search%20product.png)
+![Postman search product.png](../images/Lesson%205/Postman%20search%20product.png)
 
 #### 7.3.2. So sánh nhanh — bắt buộc vs không bắt buộc
 
@@ -462,7 +462,7 @@ public ResponseEntity<String> getProductById(
 
 **Kết quả test Postman:**
 
-![Postman product by id.png](../../images/Lesson%205/Postman%20product%20by%20id.png)
+![Postman product by id.png](../images/Lesson%205/Postman%20product%20by%20id.png)
 
 ### 7.5. Ví dụ 4 — Trả về object JSON
 
@@ -530,7 +530,7 @@ Content-Type: application/json
 
 {"name":"Michael","age":45}
 ```
-![Postman news latest.png](../../images/Lesson%205/Postman%20news%20latest.png)
+![Postman news latest.png](../images/Lesson%205/Postman%20news%20latest.png)
 
 #### 7.5.2. Cách 2 — Trả `ResponseEntity<object>`
 
@@ -565,9 +565,9 @@ public ResponseEntity<NewsDto> getNewsById(@PathVariable Long id) {
 
 **Kết quả test Postman:**
 
-![Postman news 1.png](../../images/Lesson%205/Postman%20news%201.png)
+![Postman news 1.png](../images/Lesson%205/Postman%20news%201.png)
 
-![Postman news not found.png](../../images/Lesson%205/Postman%20news%20not%20found.png)
+![Postman news not found.png](../images/Lesson%205/Postman%20news%20not%20found.png)
 
 #### 7.5.3. So sánh hai cách
 
@@ -653,28 +653,28 @@ public class NewsController {
 
 **Test Postman:** `GET http://localhost:8080/api/v1/news/latest` — kiểm tra tab **Headers** của response có `Content-Type: application/json`.
 
-![Postman tab Headers.png](../../images/Lesson%205/Postman%20tab%20Headers.png)
+![Postman tab Headers.png](../images/Lesson%205/Postman%20tab%20Headers.png)
 
 ### 7.7. Thực hành GET
 
 1. Tạo `GET /api/v1/products/search` — `category` bắt buộc, `brand` không bắt buộc, `sortBy` có `defaultValue`
    
-    <br>![Postman search product by category.png](../../images/Lesson%205/Postman%20search%20product%20by%20category.png)
+    <br>![Postman search product by category.png](../images/Lesson%205/Postman%20search%20product%20by%20category.png)
 
 
 2. Tạo `GET /api/v1/users` — trả danh sách tên, ví dụ: `["Sarah", "Mike", "Kim Jong"]`
 
-    <br>![Postman GET users.png](../../images/Lesson%205/Postman%20GET%20users.png)
+    <br>![Postman GET users.png](../images/Lesson%205/Postman%20GET%20users.png)
 
 
 3. Tạo `GET /api/v1/users/{id}` — trả tên user theo id (demo: in log và trả id)
 
-    <br>![Postman user by id.png](../../images/Lesson%205/Postman%20user%20by%20id.png)
+    <br>![Postman user by id.png](../images/Lesson%205/Postman%20user%20by%20id.png)
 
 
 4. Tạo `GET /api/v1/news/latest` — trả object JSON với `name` và `age`
 
-    <br>![Postman news latest.png](../../images/Lesson%205/Postman%20news%20latest.png)
+    <br>![Postman news latest.png](../images/Lesson%205/Postman%20news%20latest.png)
 
 
 ---
@@ -712,7 +712,7 @@ public ResponseEntity<Void> createProductFromForm(
 | `@RequestParam(required = false)` | Tham số không bắt buộc |
 | `@RequestParam(defaultValue = "yellow")` | Giá trị mặc định nếu client không gửi |
 
-![Postman POST user.png](../../images/Lesson%205/Postman%20POST%20user.png)
+![Postman POST user.png](../images/Lesson%205/Postman%20POST%20user.png)
 
 ### 8.3. Ví dụ 2 — Nhận dữ liệu từ JSON body
 
@@ -776,7 +776,7 @@ public ResponseEntity<ProductRequest> createProductFromBody(
 }
 ```
 
-![Postman POST product from body.png](../../images/Lesson%205/Postman%20POST%20product%20from%20body.png)
+![Postman POST product from body.png](../images/Lesson%205/Postman%20POST%20product%20from%20body.png)
 
 Header: `Content-Type: application/json`
 
@@ -784,12 +784,12 @@ Header: `Content-Type: application/json`
 
 1. Tạo `POST /api/v1/categories` — nhận `name` (bắt buộc) và `location` (không bắt buộc) từ **form**. In giá trị ra console.
 
-    <br>![Postman POST category.png](../../images/Lesson%205/Postman%20POST%20category.png)
+    <br>![Postman POST category.png](../images/Lesson%205/Postman%20POST%20category.png)
 
 
 2. Tạo `POST /api/v1/games` — nhận `name` (string), `price` (double), `platform` (string) từ **JSON body**. In giá trị ra console.
 
-    <br>![Postman POST games.png](../../images/Lesson%205/Postman%20POST%20games.png)
+    <br>![Postman POST games.png](../images/Lesson%205/Postman%20POST%20games.png)
 
 **Gợi ý DTO cho bài 2** (`post/dto/GameRequest.java`):
 
@@ -834,9 +834,9 @@ public ResponseEntity<Void> updateCategoryFromForm(
 
 **Postman:** `PUT http://localhost:8080/api/v1/categories/1` → Body → x-www-form-urlencoded
 
-![Postman PUT category 1.png](../../images/Lesson%205/Postman%20PUT%20category%201.png)
+![Postman PUT category 1.png](../images/Lesson%205/Postman%20PUT%20category%201.png)
 
-![Postman PUT category 2.png](../../images/Lesson%205/Postman%20PUT%20category%202.png)
+![Postman PUT category 2.png](../images/Lesson%205/Postman%20PUT%20category%202.png)
 
 ### 9.3. Ví dụ 2 — Cập nhật qua JSON body
 
@@ -902,18 +902,18 @@ public ResponseEntity<CategoryRequest> updateCategoryFromBody(
 ```
 **Test Postman:**
 
-![Postman PUT category json.png](../../images/Lesson%205/Postman%20PUT%20category%20json.png)
+![Postman PUT category json.png](../images/Lesson%205/Postman%20PUT%20category%20json.png)
 
 ### 9.4. Thực hành PUT
 
 1. Tạo `PUT /api/v1/users/{id}` — nhận `name` (bắt buộc) và `address` (không bắt buộc) từ **form**. In giá trị.
 
-    <br>![Postman PUT user by id.png](../../images/Lesson%205/Postman%20PUT%20user%20by%20id.png)
+    <br>![Postman PUT user by id.png](../images/Lesson%205/Postman%20PUT%20user%20by%20id.png)
 
 
 2. Tạo `PUT /api/v1/users/{id}/profile` — nhận `gender` (string), `age` (int), `education` (string) từ **JSON body**. In giá trị.
 
-    <br>![Postman PUT user profile by id.png](../../images/Lesson%205/Postman%20PUT%20user%20profile%20by%20id.png)
+    <br>![Postman PUT user profile by id.png](../images/Lesson%205/Postman%20PUT%20user%20profile%20by%20id.png)
 
 ---
 
@@ -997,17 +997,17 @@ public ResponseEntity<ProductPatchRequest> patchProduct(
 }
 ```
 
-![Postman PATCH product.png](../../images/Lesson%205/Postman%20PATCH%20product.png)
+![Postman PATCH product.png](../images/Lesson%205/Postman%20PATCH%20product.png)
 
 ### 10.3. Thực hành PATCH
 
 1. Tạo `PATCH /api/v1/users/{id}` — nhận body `{"address": "..."}` (có thể thêm `phone`). In các field nhận được.
 
-    <br>![Postman PATCH user by id.png](../../images/Lesson%205/Postman%20PATCH%20user%20by%20id.png)
+    <br>![Postman PATCH user by id.png](../images/Lesson%205/Postman%20PATCH%20user%20by%20id.png)
 
 2. Tạo `PATCH /api/v1/products/{id}` — chỉ cập nhật `price` từ body JSON.
 
-    <br>![Postman PATCH product.png](../../images/Lesson%205/Postman%20PATCH%20product.png)
+    <br>![Postman PATCH product.png](../images/Lesson%205/Postman%20PATCH%20product.png)
 
 ---
 
@@ -1035,7 +1035,7 @@ public ResponseEntity<Void> deleteOrderByQuery(
 
 **Postman:** `DELETE http://localhost:8080/api/v1/orders?id=5`
 
-![Postman DEL order.png](../../images/Lesson%205/Postman%20DEL%20order.png)
+![Postman DEL order.png](../images/Lesson%205/Postman%20DEL%20order.png)
 
 ### 11.3. Ví dụ 2 — Xóa theo path variable (khuyến nghị)
 
@@ -1051,7 +1051,7 @@ public ResponseEntity<Void> deleteOrderById(
 
 **Postman:** `DELETE http://localhost:8080/api/v1/orders/5`
 
-![Postman DEL order by id.png](../../images/Lesson%205/Postman%20DEL%20order%20by%20id.png)
+![Postman DEL order by id.png](../images/Lesson%205/Postman%20DEL%20order%20by%20id.png)
 
 ### 11.4. Ví dụ 3 — Xóa với body (tham khảo)
 
@@ -1069,18 +1069,18 @@ public ResponseEntity<Void> deleteOrdersFromBody(
 
 > **Lưu ý:** Trong production, xóa nhiều bản ghi thường dùng endpoint riêng (`POST /batch-delete`) thay vì DELETE kèm body.
 
-![Postman DEL order batch.png](../../images/Lesson%205/Postman%20DEL%20order%20batch.png)
+![Postman DEL order batch.png](../images/Lesson%205/Postman%20DEL%20order%20batch.png)
 
 ### 11.5. Thực hành DELETE
 
 1. Tạo `DELETE /api/v1/songs` — nhận `title` (bắt buộc) và `theme` (không bắt buộc) từ **query**. In giá trị.
 
-    <br>![Postman DEL song by title.png](../../images/Lesson%205/Postman%20DEL%20song%20by%20title.png)
+    <br>![Postman DEL song by title.png](../images/Lesson%205/Postman%20DEL%20song%20by%20title.png)
 
 
 2. Tạo `DELETE /api/v1/songs/{id}` — xóa theo id trong path. In id ra console.
 
-    <br>![Postman DEL songs by id.png](../../images/Lesson%205/Postman%20DEL%20songs%20by%20id.png)
+    <br>![Postman DEL songs by id.png](../images/Lesson%205/Postman%20DEL%20songs%20by%20id.png)
 
 ---
 

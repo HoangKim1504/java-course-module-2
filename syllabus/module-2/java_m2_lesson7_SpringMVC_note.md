@@ -320,11 +320,11 @@ public class FileUploadController {
 | 6 | Mở trình duyệt: `http://localhost:8080/uploads/misc/uuid.jpg` |
 
 - Upload sai loại file:
-![Postman upload file validation.png](../../images/Lesson%207/Postman%20upload%20file%20validation.png)
+![Postman upload file validation.png](../images/Lesson%207/Postman%20upload%20file%20validation.png)
 
 - Upload thành công và mở file vừa upload trên trình duyệt:
-![Postman upload file success.png](../../images/Lesson%207/Postman%20upload%20file%20success.png)
-![Image link after uploading.png](../../images/Lesson%207/Image%20link%20after%20uploading.png)
+![Postman upload file success.png](../images/Lesson%207/Postman%20upload%20file%20success.png)
+![Image link after uploading.png](../images/Lesson%207/Image%20link%20after%20uploading.png)
 
 ### 1.8. Ghi nhớ cho form HTML *(dùng ở Bài 8)*
 
@@ -541,13 +541,13 @@ public class ExternalApiController {
 
 **Kết quả test Postman:**
 1. Danh sách sản phẩm: GET http://localhost:8080/api/external/products
-    <br>![Postman GET external_products.png](../../images/Lesson%207/Postman%20GET%20external_products.png)
+    <br>![Postman GET external_products.png](../images/Lesson%207/Postman%20GET%20external_products.png)
 2. Categories: GET http://localhost:8080/api/external/categories
-    <br>![Postman GET external_categories.png](../../images/Lesson%207/Postman%20GET%20external_categories.png)
+    <br>![Postman GET external_categories.png](../images/Lesson%207/Postman%20GET%20external_categories.png)
 3. Danh sách users: GET http://localhost:8080/api/external/users
-    <br>![Postman GET external_users.png](../../images/Lesson%207/Postman%20GET%20external_users.png)
+    <br>![Postman GET external_users.png](../images/Lesson%207/Postman%20GET%20external_users.png)
 4. 1 user theo id: GET http://localhost:8080/api/external/users/1
-    <br>![Postman GET external_users_id.png](../../images/Lesson%207/Postman%20GET%20external_users_id.png)
+    <br>![Postman GET external_users_id.png](../images/Lesson%207/Postman%20GET%20external_users_id.png)
 
 **Node lỗi `RestClient.Builder` khi chạy source:**
 
@@ -723,8 +723,8 @@ public class AvatarUploadController {
 
 **Kết quả test Postman:**
 
-![Postman ex1.png](../../images/Lesson%207/Postman%20ex1.png)
-![Avatar upload ex1.png](../../images/Lesson%207/Avatar%20upload%20ex1.png)
+![Postman ex1.png](../images/Lesson%207/Postman%20ex1.png)
+![Avatar upload ex1.png](../images/Lesson%207/Avatar%20upload%20ex1.png)
 
 #### Bài 2 — Products theo category
 
@@ -781,7 +781,7 @@ public class ProductCategoryController {
 ```
 **Kết quả test Postman:**
 
-![Postman ex2.png](../../images/Lesson%207/Postman%20ex2.png)
+![Postman ex2.png](../images/Lesson%207/Postman%20ex2.png)
 
 ### Checklist nộp bài
 

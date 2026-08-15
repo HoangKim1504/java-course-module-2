@@ -468,7 +468,7 @@ Tham khảo: [Spring Boot Dependencies — MVN Repository](https://mvnrepository
 - Phần dependency Tomcat này không cần thiết, có thể xoá đi trong file pom.xml
 - Lý do: trong Spring Framework đã có nhúng rồi nên không cần để vào thêm trong file pom.xml
 
-![File pom - delete unnecessary package.png](../../images/Lesson 4/File%20pom%20-%20delete%20unnecessary%20package.png)
+![File pom - delete unnecessary package.png](../images/Lesson 4/File%20pom%20-%20delete%20unnecessary%20package.png)
 
 - Khi sửa file pom.xml thì phải build lại để chạy nội dung mới.
 
@@ -670,7 +670,7 @@ public class HelloController {
 1. Run `DemoLesson4SpringbootApplication.java`
 2. Mở **http://localhost:8080/hello**
 3. Kiểm tra tên và message hiển thị đúng
-<br> ![Hello world demo.png](../../images/Lesson%204/Hello%20world%20demo.png)
+<br> ![Hello world demo.png](../images/Lesson%204/Hello%20world%20demo.png)
 
 ### Note phần chú ý khi chạy code:
 1. Khi server đã chạy thành công nhưng mở web không thấy kết quả
@@ -679,7 +679,7 @@ public class HelloController {
 - Kiểm tra cấu trúc folder xem đã để file đúng cấu trúc chưa
 - Xem đường dẫn package trong file đúng chưa
 3. Giải thích code html:
-<br>   ![ChatGPT1.png](../../images/Lesson 4/Explain%20Thymeleaf%20code%201-%20ChatGPT.png)
+<br>   ![ChatGPT1.png](../images/Lesson 4/Explain%20Thymeleaf%20code%201-%20ChatGPT.png)
 
 ### Bài mở rộng *(tuỳ chọn)*
 
@@ -785,10 +785,10 @@ nav a:hover {
 }
 ```
 ### Kết quả:
-![Hello World có CSS & thời gian.png](../../images/Lesson 4/Hello%20World%20có%20CSS%20&%20thời%20gian.png)
+![Hello World có CSS & thời gian.png](../images/Lesson 4/Hello%20World%20có%20CSS%20&%20thời%20gian.png)
 
 - Khi nhấn qua trang khác ở đường link Trang Hello cơ bản:
-![Go to Hello world page.png](../../images/Lesson 4/Go%20to%20Hello%20world%20page.png)
+![Go to Hello world page.png](../images/Lesson 4/Go%20to%20Hello%20world%20page.png)
 ### Note khi làm bài mở rộng trên:
 1. Giải thích phần [return "redirect:/] ở Controller:
 ```java
@@ -1064,21 +1064,21 @@ public class StudentController {
 
 <br>**Kết quả phần Enterprise best practice:**
 
-![List of student.png](../../images/Lesson 4/List%20of%20student.png)
+![List of student.png](../images/Lesson 4/List%20of%20student.png)
 
 Khi nhấn vào "Chi tiết":
 
-![Detail of student A.png](../../images/Lesson 4/Detail%20of%20student%20A.png)
+![Detail of student A.png](../images/Lesson 4/Detail%20of%20student%20A.png)
 
-![Detail of student B.png](../../images/Lesson 4/Detail%20of%20student%20B.png)
+![Detail of student B.png](../images/Lesson 4/Detail%20of%20student%20B.png)
 
 Khi nhấn vào "Thêm sinh viên":
 
-![Add student.png](../../images/Lesson%204/Add%20student.png)
+![Add student.png](../images/Lesson%204/Add%20student.png)
 
-![Add student - error1.png](../../images/Lesson%204/Add%20student%20-%20error1.png)
+![Add student - error1.png](../images/Lesson%204/Add%20student%20-%20error1.png)
 
-![Add student - error2.png](../../images/Lesson%204/Add%20student%20-%20error2.png)
+![Add student - error2.png](../images/Lesson%204/Add%20student%20-%20error2.png)
 
 <br>**Nguyên tắc khi đi làm:**
 
