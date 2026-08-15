@@ -1,0 +1,100 @@
+package com.demo.service;
+
+import com.demo.dto.ProductListResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.Collections;
+
+/**
+ * Service chứa toàn bộ nghiệp vụ sản phẩm — là cầu nối giữa controller và API ngoài DummyJSON.
+ *
+ * <p>Lớp này dùng {@link RestTemplate} để gọi REST API tại {@code https://dummyjson.com/products}
+ * cho các thao tác: lấy danh sách, xem chi tiết, tìm kiếm, lấy nhóm sản phẩm, thêm và sửa.
+ * Mọi lời gọi đều được bọc try/catch để khi API lỗi/timeout thì trả về dữ liệu rỗng hoặc
+ * {@code null} thay vì làm sập trang web.</p>
+ */
+@Service
+@RequiredArgsConstructor
+public class ProductService {
+
+    /**
+     * Địa chỉ gốc của API sản phẩm DummyJSON, mọi endpoint đều nối thêm vào URL này.
+     */
+    private static final String BASE_URL = "https://dummyjson.com/products";
+
+    /**
+     * HTTP client (cấu hình sẵn timeout) dùng để gọi API ngoài.
+     */
+    private final RestTemplate restTemplate;
+
+    /**
+     * Lấy danh sách sản phẩm cho trang chủ — hỗ trợ lọc theo nhóm, phân trang và sắp xếp.
+     *
+     * <p>Hàm tự dựng URL gọi DummyJSON dựa trên tham số:
+     * dùng endpoint {@code /products/category/{slug}} khi có lọc nhóm, ngược lại dùng
+     * {@code /products}; thêm {@code limit}/{@code skip} để phân trang và {@code sortBy}/{@code order}
+     * để sắp xếp.</p>
+     *
+     * @return danh sách sản phẩm của trang hiện tại kèm tổng số; rỗng nếu API lỗi
+     */
+    public ProductListResponse getProducts(String category, int page, int size, String sortBy, String order) {
+        String baseUrl = (category == null || category.isBlank())
+                ? BASE_URL
+                : BASE_URL + "/category/" + category;
+
+        int skip = Math.max(page - 1, 0) * size; // số phần tử cần bỏ qua trước khi lấy dữ liệu
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(baseUrl) // tạo URL mới với param: limit, skip
+                .queryParam("limit", size)
+                .queryParam("skip", skip);
+
+        if (sortBy != null && !sortBy.isBlank()) {
+            builder.queryParam("sortBy", sortBy)
+                    .queryParam("order", (order == null || order.isBlank()) ? "asc" : order);
+        }
+
+        return fetchProductList(builder.toUriString());
+    }
+
+    /**
+     * Hàm dùng chung để gọi một URL trả về danh sách sản phẩm và chuẩn hóa kết quả.
+     *
+     * <p>Nếu API lỗi hoặc trả về thiếu trường, hàm tự bù {@code products} rỗng và
+     * {@code total} hợp lệ để view luôn render được mà không cần kiểm tra null.</p>
+     *
+     * @return danh sách sản phẩm đã được làm sạch; rỗng nếu API lỗi
+     */
+    private ProductListResponse fetchProductList(String url) {
+        try {
+            /** Dòng này dùng RestTemplate để gọi API bằng HTTP GET, lấy JSON trả về và
+             * tự động convert thành object Java ProductListResponse. */
+            ProductListResponse response = restTemplate.getForObject(url, ProductListResponse.class);
+            if (response == null) {
+                return emptyProductList();
+            }
+            if (response.getProducts() == null) {
+                response.setProducts(Collections.emptyList());
+            }
+            if (response.getTotal() == null) {
+                response.setTotal(response.getProducts().size());
+            }
+            return response;
+        } catch (RestClientException ex) {
+            return emptyProductList();
+        }
+    }
+
+    /**
+     * Tạo một kết quả danh sách rỗng (0 sản phẩm) dùng khi API lỗi.
+     */
+    private ProductListResponse emptyProductList() {
+        ProductListResponse response = new ProductListResponse();
+        response.setProducts(Collections.emptyList());
+        response.setTotal(0);
+        return response;
+    }
+
+}

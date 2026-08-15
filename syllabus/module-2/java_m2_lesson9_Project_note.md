@@ -53,6 +53,215 @@ Các ý tưởng dưới đây nằm ngoài phạm vi bài, dùng cho học viê
 | Hướng dẫn | Hiển thị hình ảnh, tên, giá, miêu tả của mỗi sản phẩm lấy từ nguồn dữ liệu |
 | Gợi ý | Dùng Thymeleaf với các tag `th:each`, `th:text`, `th:src` để đổ dữ liệu ra view |
 
+**Note:**
+
+<details>
+
+### 1. Phân trang với `limit` và `skip`
+
+```java
+int skip = Math.max(page - 1, 0) * size;
+
+UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(baseUrl)
+        .queryParam("limit", size)
+        .queryParam("skip", skip);
+```
+
+* `page`: trang hiện tại.
+* `size`: số sản phẩm mỗi trang.
+* `skip`: số sản phẩm cần bỏ qua.
+
+Công thức:
+
+```text
+skip = (page - 1) * size
+```
+
+Ví dụ:
+
+```text
+page = 3
+size = 10
+
+skip = 20
+```
+
+URL:
+
+```text
+/products?limit=10&skip=20
+```
+
+→ Bỏ qua 20 sản phẩm đầu và lấy 10 sản phẩm tiếp theo.
+
+`Math.max(page - 1, 0)` giúp đảm bảo `skip` không bị âm.
+
+---
+
+### 2. Tạo URL bằng `UriComponentsBuilder`
+
+```java
+UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(baseUrl)
+        .queryParam("limit", size)
+        .queryParam("skip", skip);
+```
+
+Dùng để tạo URL có query parameter an toàn và dễ đọc.
+
+Ví dụ:
+
+```text
+https://api.example.com/products?limit=10&skip=20
+```
+
+---
+
+### 3. Gọi API bằng `RestTemplate`
+
+```java
+ProductListResponse response =
+        restTemplate.getForObject(url, ProductListResponse.class);
+```
+
+Ý nghĩa:
+
+1. Gửi HTTP `GET` tới `url`.
+2. Nhận dữ liệu JSON từ API.
+3. Jackson tự convert JSON thành object Java `ProductListResponse`.
+
+```text
+API
+ ↓ JSON
+RestTemplate
+ ↓ Mapping
+ProductListResponse
+```
+
+`ProductListResponse.class` cho Spring biết kiểu object cần convert response thành.
+
+---
+
+### 4. Lỗi thiếu `RestTemplate` Bean
+
+Lỗi:
+
+```text
+ProductService required a bean of type 'RestTemplate'
+that could not be found.
+```
+
+Nguyên nhân:
+
+```java
+public ProductService(RestTemplate restTemplate)
+```
+
+`ProductService` cần một `RestTemplate`, nhưng Spring chưa có Bean tương ứng để inject.
+
+---
+
+### 5. Tạo `RestTemplate` Bean
+
+Config cuối cùng:
+
+```java
+@Configuration
+public class RestTemplateConfig {
+
+    @Bean
+    public RestTemplate restTemplate() {
+        SimpleClientHttpRequestFactory factory =
+                new SimpleClientHttpRequestFactory();
+
+        factory.setConnectTimeout(Duration.ofSeconds(10));
+        factory.setReadTimeout(Duration.ofSeconds(10));
+
+        return new RestTemplate(factory);
+    }
+}
+```
+
+Import:
+
+```java
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.web.client.RestTemplate;
+
+import java.time.Duration;
+```
+
+##### Timeout
+
+```java
+factory.setConnectTimeout(Duration.ofSeconds(10));
+```
+
+→ Tối đa 10 giây để kết nối tới server.
+
+```java
+factory.setReadTimeout(Duration.ofSeconds(10));
+```
+
+→ Tối đa 10 giây chờ server trả dữ liệu.
+
+---
+
+### 6. Inject vào `ProductService`
+
+```java
+private final RestTemplate restTemplate;
+
+public ProductService(RestTemplate restTemplate) {
+    this.restTemplate = restTemplate;
+}
+```
+
+Spring tự lấy Bean:
+
+```java
+@Bean
+public RestTemplate restTemplate()
+```
+
+và inject vào `ProductService`.
+
+---
+
+### Luồng chức năng Danh sách sản phẩm
+
+```text
+page + size
+    ↓
+Tính skip
+    ↓
+Tạo URL với limit + skip
+    ↓
+RestTemplate gửi GET request
+    ↓
+API trả JSON
+    ↓
+JSON → ProductListResponse
+    ↓
+Lấy danh sách sản phẩm
+    ↓
+Controller → View
+```
+
+#### Ghi nhớ
+
+```text
+limit = số sản phẩm muốn lấy
+skip  = số sản phẩm cần bỏ qua
+
+skip = (page - 1) * size
+```
+
+`RestTemplate` phải được khai báo thành Spring Bean trước khi inject vào `ProductService`.
+
+</details>
+
 #### Chức năng 2 — Danh sách nhóm sản phẩm
 
 | Mục | Nội dung |
