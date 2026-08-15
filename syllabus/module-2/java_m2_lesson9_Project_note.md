@@ -311,6 +311,65 @@ skip = (page - 1) * size
 | Hướng dẫn | Người dùng nhập 1 từ khóa → tìm tất cả sản phẩm chứa từ khóa và hiển thị danh sách. Nếu không có kết quả → hiển thị trang trống kèm thông báo "không tìm thấy sản phẩm" |
 | Gợi ý | Tạo hàm JavaScript nhận từ khóa; nếu từ khóa **> 2 ký tự** → chuyển sang trang `/product_search?keyword=xxx`. Trang search lấy từ khóa từ URL, gửi request đến nguồn dữ liệu, kiểm tra kết quả rồi hiển thị |
 
+**Note:**
+
+<details>
+
+#### 1.Tổng luồng của đoạn code tìm kiếm trong file static/js/search.js:
+
+```text
+HTML load xong
+    ↓
+Lấy searchInput và searchBtn
+    ↓
+Kiểm tra 2 element có tồn tại không
+    ↓
+User nhập từ khóa
+    ↓
+┌─────────────────────┐
+│                     │
+Click nút Search    Nhấn Enter
+│                     │
+└─────────┬───────────┘
+          ↓
+   performSearch()
+          ↓
+Lấy keyword và trim()
+          ↓
+Kiểm tra độ dài keyword
+          ↓
+┌─────────────────────┐
+│                     │
+<= 2 ký tự          > 2 ký tự
+│                     │
+↓                     ↓
+Hiện alert        Mã hóa keyword
+│                     │
+return                ↓
+              Chuyển URL
+                     ↓
+      /product_search?keyword=...
+                     ↓
+            Spring Controller
+```
+
+#### Ghi nhớ
+
+* `DOMContentLoaded` → chờ HTML load xong.
+* `getElementById()` → lấy element từ HTML.
+* `addEventListener()` → lắng nghe sự kiện.
+* `performSearch()` → chứa logic tìm kiếm dùng chung.
+* `trim()` → xóa khoảng trắng đầu/cuối.
+* `encodeURIComponent()` → mã hóa từ khóa để đưa vào URL.
+* `window.location.href` → chuyển trình duyệt sang URL tìm kiếm.
+
+</details>
+
+**Kết quả:**
+
+![Function 4 - searchProducts 1.png](../images/Lesson%209/Function%204%20-%20searchProducts%201.png)
+![Function 4 - searchProducts 2.png](../images/Lesson%209/Function%204%20-%20searchProducts%202.png)
+
 #### Chức năng 5 — Thêm sản phẩm mới
 
 | Mục | Nội dung |

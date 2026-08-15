@@ -85,6 +85,25 @@ public class ProductWebController {
     }
 
     /**
+     * Hiển thị trang kết quả tìm kiếm theo từ khóa — có phân trang và sắp xếp.
+     *
+     * @return template {@code product-search}
+     */
+    @GetMapping("/product_search")
+    public String productSearch(
+            @RequestParam("keyword") String keyword,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "12") int size,
+            @RequestParam(value = "sortBy", required = false) String sortBy,
+            @RequestParam(value = "order", defaultValue = "asc") String order,
+            Model model) {
+        ProductListResponse response = productService.searchProducts(keyword, page, size, sortBy, order);
+        addPagingAttributes(model, response, page, size, sortBy, order);
+        model.addAttribute("keyword", keyword);
+        return "product-search";
+    }
+
+    /**
      * Tính toán và đẩy các thuộc tính phân trang/sắp xếp sang view (dùng chung cho home và search).
      */
     private void addPagingAttributes(Model model, ProductListResponse response, int page, int size, String sortBy, String order) {

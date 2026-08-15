@@ -135,5 +135,26 @@ public class ProductService {
             return null;
         }
     }
-    
+
+    /**
+     * Tìm kiếm sản phẩm theo từ khóa (gọi endpoint {@code /products/search?q=...}),
+     * có hỗ trợ phân trang và sắp xếp giống trang chủ.
+     *
+     * @return danh sách sản phẩm khớp từ khóa; rỗng nếu không có kết quả / API lỗi
+     */
+    public ProductListResponse searchProducts(String keyword, int page, int size, String sortBy, String order) {
+        int skip = Math.max(page - 1, 0) * size;
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(BASE_URL + "/search")
+                .queryParam("q", keyword)
+                .queryParam("limit", size)
+                .queryParam("skip", skip);
+
+        if (sortBy != null && !sortBy.isBlank()) {
+            builder.queryParam("sortBy", sortBy)
+                    .queryParam("order", (order == null || order.isBlank()) ? "asc" : order);
+        }
+
+        return fetchProductList(builder.toUriString());
+    }
+
 }
