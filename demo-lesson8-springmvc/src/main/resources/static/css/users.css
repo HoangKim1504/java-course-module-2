@@ -1,0 +1,232 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0 1rem 2rem;
+    background-color: #f5f7fa;
+    color: #333;
+}
+
+/* Navigation */
+nav {
+    background-color: #286cb5;
+    padding: 1rem;
+    margin: 0 -1rem 2rem;
+}
+
+nav a {
+    margin-right: 1rem;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+/* Main content */
+main {
+    max-width: 960px;
+    margin: 0 auto;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Table */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 1rem;
+    background: white;
+}
+
+th,
+td {
+    border-bottom: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #286cb5;
+    color: white;
+}
+
+tbody tr:hover {
+    background-color: #f1f6fc;
+}
+
+/* Avatar */
+.avatar,
+.avatar-large {
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Message */
+.error {
+    color: #c62828;
+    font-size: 0.9rem;
+}
+
+.success {
+    color: #2e7d32;
+}
+
+/* Button */
+.btn {
+    display: inline-block;
+    margin: 1rem 0;
+    padding: 0.6rem 1rem;
+
+    background-color: #286cb5;
+    color: white;
+
+    border: none;
+    border-radius: 6px;
+
+    text-decoration: none;
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.btn:hover {
+    background-color: #1f5794;
+}
+
+/* Toolbar */
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    align-items: center;
+    justify-content: space-between;
+
+    margin: 1rem 0;
+}
+
+/* Search */
+.search-form {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.search-form input[type="search"] {
+    min-width: 260px;
+    padding: 0.55rem 0.7rem;
+
+    border: 1px solid #ccc;
+    border-radius: 5px;
+
+    outline: none;
+}
+
+.search-form input[type="search"]:focus {
+    border-color: #286cb5;
+}
+
+.search-form button {
+    padding: 0.55rem 0.9rem;
+
+    background-color: #286cb5;
+    color: white;
+
+    border: none;
+    border-radius: 5px;
+
+    cursor: pointer;
+}
+
+.search-form button:hover {
+    background-color: #1f5794;
+}
+
+/* Meta */
+.meta {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+/* Actions */
+.actions {
+    white-space: nowrap;
+}
+
+.actions form {
+    display: inline;
+    margin-left: 0.5rem;
+}
+
+.actions a {
+    margin-right: 0.5rem;
+    color: #286cb5;
+    text-decoration: none;
+}
+
+.actions a:hover {
+    text-decoration: underline;
+}
+
+/* Pagination */
+.pagination {
+    margin-top: 1.25rem;
+
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+}
+
+.pagination a {
+    padding: 0.4rem 0.7rem;
+
+    border: 1px solid #ccc;
+    border-radius: 5px;
+
+    text-decoration: none;
+    color: #286cb5;
+
+    background-color: white;
+}
+
+.pagination a:hover {
+    background-color: #edf4fb;
+}
+
+.pagination a.active {
+    background-color: #286cb5;
+    color: white;
+    border-color: #286cb5;
+}
+
+/* Form */
+form div {
+    margin-bottom: 1rem;
+}
+
+form label {
+    display: inline-block;
+    min-width: 100px;
+    font-weight: 600;
+}
+
+form input[type="text"],
+form input[type="email"] {
+    min-width: 280px;
+    padding: 0.5rem 0.7rem;
+
+    border: 1px solid #ccc;
+    border-radius: 5px;
+
+    outline: none;
+}
+
+form input[type="text"]:focus,
+form input[type="email"]:focus {
+    border-color: #286cb5;
+}

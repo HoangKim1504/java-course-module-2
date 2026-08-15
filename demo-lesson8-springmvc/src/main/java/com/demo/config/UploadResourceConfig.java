@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class UploadResourceConfig implements WebMvcConfigurer {
 
     // @Value("${app.upload.dir}" -> tên đường dẫn phải khớp file application.properties
-    @Value("${app.upload.dir")
+    @Value("${app.upload.dir}")
     private String uploadDir;
 
     @Override
