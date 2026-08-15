@@ -1,6 +1,8 @@
 package com.demo.controller.web;
 
 import com.demo.dto.ProductListResponse;
+import com.demo.exception.ProductNotFoundException;
+import com.demo.model.Product;
 import com.demo.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -72,6 +74,17 @@ public class ProductWebController {
     }
 
     /**
+     * Hiển thị trang chi tiết của một sản phẩm theo id truyền qua {@code ?id=}.
+     *
+     * @return template {@code product-detail}
+     */
+    @GetMapping("/product_detail")
+    public String productDetail(@RequestParam("id") long id, Model model) {
+        model.addAttribute("product", requireProduct(id));
+        return "product-detail";
+    }
+
+    /**
      * Tính toán và đẩy các thuộc tính phân trang/sắp xếp sang view (dùng chung cho home và search).
      */
     private void addPagingAttributes(Model model, ProductListResponse response, int page, int size, String sortBy, String order) {
@@ -87,5 +100,17 @@ public class ProductWebController {
         model.addAttribute("size", effectiveSize);
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("order", order);
+    }
+
+    /**
+     * Lấy sản phẩm theo id, ném {@link ProductNotFoundException} nếu không tồn tại
+     * để bộ xử lý lỗi hiển thị trang 404.
+     */
+    private Product requireProduct(long id) {
+        Product product = productService.getProductById(id);
+        if (product == null) {
+            throw new ProductNotFoundException(id);
+        }
+        return product;
     }
 }

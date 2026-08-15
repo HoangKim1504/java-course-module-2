@@ -2,6 +2,7 @@ package com.demo.service;
 
 import com.demo.dto.ProductListResponse;
 import com.demo.model.Category;
+import com.demo.model.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
@@ -116,4 +117,23 @@ public class ProductService {
             return Collections.emptyList();
         }
     }
+
+    /**
+     * Lấy thông tin chi tiết của một sản phẩm theo id.
+     *
+     * @return sản phẩm tìm được, hoặc {@code null} nếu không có / API lỗi
+     */
+    /**
+     * Lấy thông tin chi tiết của một sản phẩm theo id.
+     *
+     * @return sản phẩm tìm được, hoặc {@code null} nếu không có / API lỗi
+     */
+    public Product getProductById(long id) {
+        try {
+            return restTemplate.getForObject(BASE_URL + "/" + id, Product.class);
+        } catch (RestClientException ex) {
+            return null;
+        }
+    }
+    
 }

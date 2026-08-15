@@ -296,6 +296,11 @@ skip = (page - 1) * size
 | Hướng dẫn | Hiển thị chi tiết của 1 sản phẩm lấy từ nguồn dữ liệu (lưu ý mỗi sản phẩm có id khác nhau) |
 | Gợi ý | Lấy id từ URL → lấy thông tin sản phẩm từ nguồn dữ liệu → hiển thị nhiều thông tin nhất có thể |
 
+**Kết quả:**
+
+![Function 3 - getProductDetail 1.png](../images/Lesson%209/Function%203%20-%20getProductDetail%201.png)
+![Function 3 - getProductDetail 2.png](../images/Lesson%209/Function%203%20-%20getProductDetail%202.png)
+
 #### Chức năng 4 — Tìm kiếm sản phẩm
 
 | Mục | Nội dung |
