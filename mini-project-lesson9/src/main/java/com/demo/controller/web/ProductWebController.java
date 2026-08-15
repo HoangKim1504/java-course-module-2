@@ -61,6 +61,17 @@ public class ProductWebController {
     }
 
     /**
+     * Hiển thị trang danh sách các nhóm (category) sản phẩm.
+     *
+     * @return template {@code category}
+     */
+    @GetMapping("/category")
+    public String categories(Model model) {
+        model.addAttribute("categories", productService.getCategories());
+        return "category";
+    }
+
+    /**
      * Tính toán và đẩy các thuộc tính phân trang/sắp xếp sang view (dùng chung cho home và search).
      */
     private void addPagingAttributes(Model model, ProductListResponse response, int page, int size, String sortBy, String order) {

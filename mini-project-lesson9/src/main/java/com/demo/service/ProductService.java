@@ -1,13 +1,16 @@
 package com.demo.service;
 
 import com.demo.dto.ProductListResponse;
+import com.demo.model.Category;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Service chứa toàn bộ nghiệp vụ sản phẩm — là cầu nối giữa controller và API ngoài DummyJSON.
@@ -97,4 +100,20 @@ public class ProductService {
         return response;
     }
 
+    /**
+     * Lấy danh sách nhóm (category) sản phẩm để hiển thị trang phân loại.
+     *
+     * @return danh sách category; rỗng nếu API lỗi
+     */
+    public List<Category> getCategories() {
+        try {
+            Category[] categories = restTemplate.getForObject(BASE_URL + "/categories", Category[].class);
+            if (categories == null) {
+                return Collections.emptyList();
+            }
+            return Arrays.asList(categories);
+        } catch (RestClientException ex) {
+            return Collections.emptyList();
+        }
+    }
 }

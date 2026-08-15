@@ -53,6 +53,15 @@ Các ý tưởng dưới đây nằm ngoài phạm vi bài, dùng cho học viê
 | Hướng dẫn | Hiển thị hình ảnh, tên, giá, miêu tả của mỗi sản phẩm lấy từ nguồn dữ liệu |
 | Gợi ý | Dùng Thymeleaf với các tag `th:each`, `th:text`, `th:src` để đổ dữ liệu ra view |
 
+**Kết quả:**
+
+![Function 1 - getProductList 1.png](../images/Lesson%209/Function%201%20-%20getProductList%201.png)
+![Function 1 - getProductList 2.png](../images/Lesson%209/Function%201%20-%20getProductList%202.png)
+
+Khi chuyển qua trang tiếp theo:
+![Function 1 - getProductList 3.png](../images/Lesson%209/Function%201%20-%20getProductList%203.png)
+![Function 1 - getProductList 4.png](../images/Lesson%209/Function%201%20-%20getProductList%204.png)
+
 **Note:**
 
 <details>
@@ -271,6 +280,11 @@ skip = (page - 1) * size
 | Template tham khảo | [Fruitables — shop.html](https://themewagon.github.io/fruitables/shop.html) |
 | Hướng dẫn | Hiển thị danh sách nhóm sản phẩm lấy từ nguồn dữ liệu |
 | Gợi ý | Dùng Thymeleaf với tag `th:each` để hiển thị dữ liệu ra view |
+
+**Kết quả:**
+
+![Function 2 - getCategoryList 1.png](../images/Lesson%209/Function%202%20-%20getCategoryList%201.png)
+![Function 2 - getCategoryList 2.png](../images/Lesson%209/Function%202%20-%20getCategoryList%202.png)
 
 #### Chức năng 3 — Chi tiết sản phẩm
 
