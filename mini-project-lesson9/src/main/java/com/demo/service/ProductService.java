@@ -151,6 +151,15 @@ public class ProductService {
     }
 
     /**
+     * Xóa một sản phẩm theo id bằng cách gửi {@code DELETE /products/{id}} tới DummyJSON.
+     *
+     * <p>Lưu ý: DummyJSON chỉ giả lập việc xóa, dữ liệu không bị xóa thật trên server.</p>
+     */
+    public void deleteProduct(long id) {
+        restTemplate.delete(BASE_URL + "/" + id);
+    }
+
+    /**
      * Hàm dùng chung để gọi một URL trả về danh sách sản phẩm và chuẩn hóa kết quả.
      *
      * <p>Nếu API lỗi hoặc trả về thiếu trường, hàm tự bù {@code products} rỗng và

@@ -48,4 +48,16 @@ public class ProductApiController {
         Product product = productService.updateProduct(id, request);
         return ResponseEntity.ok(product);
     }
+
+    /**
+     * Nhận yêu cầu xóa sản phẩm theo id và chuyển tiếp tới service.
+     *
+     * @return HTTP 204 (No Content) khi xóa thành công
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable long id) {
+        productService.deleteProduct(id);
+        return ResponseEntity.noContent().build();
+    }
+    
 }

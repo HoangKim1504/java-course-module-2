@@ -347,6 +347,11 @@ return                ↓
 | Hướng dẫn | Thêm nút **Xóa sản phẩm** ở trang chi tiết; hỏi xác nhận trước khi xóa; xóa xong quay về trang chủ |
 | Gợi ý | JS gọi `fetch DELETE` qua Spring Proxy → `ProductService.deleteProduct()` → DummyJSON |
 
+**Kết quả:**
+
+![Function 7 - deleteProduct 1.png](img.png)
+![Function 7 - deleteProduct 2.png](img_1.png)
+
 #### Chức năng 8 — Phân trang danh sách
 
 | Mục | Nội dung |
