@@ -104,6 +104,16 @@ public class ProductWebController {
     }
 
     /**
+     * Mở form thêm sản phẩm mới (form trống, dữ liệu gửi đi do JavaScript đảm nhiệm).
+     *
+     * @return template {@code product-add}
+     */
+    @GetMapping("/product_add")
+    public String productAdd() {
+        return "product-add";
+    }
+
+    /**
      * Tính toán và đẩy các thuộc tính phân trang/sắp xếp sang view (dùng chung cho home và search).
      */
     private void addPagingAttributes(Model model, ProductListResponse response, int page, int size, String sortBy, String order) {

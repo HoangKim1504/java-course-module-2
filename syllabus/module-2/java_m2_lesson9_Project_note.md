@@ -317,6 +317,11 @@ return                ↓
 | Hướng dẫn | Tạo 1 trang HTML với các textbox để nhập thông tin sản phẩm mới |
 | Gợi ý | Tạo hàm JavaScript nhận dữ liệu từ textbox → **xác thực dữ liệu** → nếu hợp lệ gửi request `POST` tới nguồn dữ liệu → thành công thì hiển thị thông báo (có thể dùng `alert`) |
 
+**Kết quả:**
+
+![Function 5 - addProduct 1.png](../images/Lesson%209/Function%205%20-%20addProduct%202.png)
+![Function 5 - addProduct 2.png](../images/Lesson%209/Function%205%20-%20addProduct%201.png)
+
 #### Chức năng 6 — Cập nhật sản phẩm
 
 | Mục | Nội dung |

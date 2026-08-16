@@ -1,9 +1,13 @@
 package com.demo.service;
 
 import com.demo.dto.ProductListResponse;
+import com.demo.dto.ProductRequest;
 import com.demo.model.Category;
 import com.demo.model.Product;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -64,44 +68,6 @@ public class ProductService {
     }
 
     /**
-     * Hàm dùng chung để gọi một URL trả về danh sách sản phẩm và chuẩn hóa kết quả.
-     *
-     * <p>Nếu API lỗi hoặc trả về thiếu trường, hàm tự bù {@code products} rỗng và
-     * {@code total} hợp lệ để view luôn render được mà không cần kiểm tra null.</p>
-     *
-     * @return danh sách sản phẩm đã được làm sạch; rỗng nếu API lỗi
-     */
-    private ProductListResponse fetchProductList(String url) {
-        try {
-            /** Dòng này dùng RestTemplate để gọi API bằng HTTP GET, lấy JSON trả về và
-             * tự động convert thành object Java ProductListResponse. */
-            ProductListResponse response = restTemplate.getForObject(url, ProductListResponse.class);
-            if (response == null) {
-                return emptyProductList();
-            }
-            if (response.getProducts() == null) {
-                response.setProducts(Collections.emptyList());
-            }
-            if (response.getTotal() == null) {
-                response.setTotal(response.getProducts().size());
-            }
-            return response;
-        } catch (RestClientException ex) {
-            return emptyProductList();
-        }
-    }
-
-    /**
-     * Tạo một kết quả danh sách rỗng (0 sản phẩm) dùng khi API lỗi.
-     */
-    private ProductListResponse emptyProductList() {
-        ProductListResponse response = new ProductListResponse();
-        response.setProducts(Collections.emptyList());
-        response.setTotal(0);
-        return response;
-    }
-
-    /**
      * Lấy danh sách nhóm (category) sản phẩm để hiển thị trang phân loại.
      *
      * @return danh sách category; rỗng nếu API lỗi
@@ -155,6 +121,65 @@ public class ProductService {
         }
 
         return fetchProductList(builder.toUriString());
+    }
+
+    /**
+     * Thêm mới một sản phẩm bằng cách gửi {@code POST /products/add} tới DummyJSON.
+     *
+     * <p>Lưu ý: DummyJSON chỉ giả lập việc thêm, dữ liệu không được lưu thật trên server.</p>
+     *
+     * @return sản phẩm vừa tạo (kèm id mới do API trả về)
+     */
+    public Product addProduct(ProductRequest request) {
+        HttpEntity<ProductRequest> entity = jsonEntity(request);
+        return restTemplate.postForObject(BASE_URL + "/add", entity, Product.class);
+    }
+
+    /**
+     * Hàm dùng chung để gọi một URL trả về danh sách sản phẩm và chuẩn hóa kết quả.
+     *
+     * <p>Nếu API lỗi hoặc trả về thiếu trường, hàm tự bù {@code products} rỗng và
+     * {@code total} hợp lệ để view luôn render được mà không cần kiểm tra null.</p>
+     *
+     * @return danh sách sản phẩm đã được làm sạch; rỗng nếu API lỗi
+     */
+    private ProductListResponse fetchProductList(String url) {
+        try {
+            /** Dòng này dùng RestTemplate để gọi API bằng HTTP GET, lấy JSON trả về và
+             * tự động convert thành object Java ProductListResponse. */
+            ProductListResponse response = restTemplate.getForObject(url, ProductListResponse.class);
+            if (response == null) {
+                return emptyProductList();
+            }
+            if (response.getProducts() == null) {
+                response.setProducts(Collections.emptyList());
+            }
+            if (response.getTotal() == null) {
+                response.setTotal(response.getProducts().size());
+            }
+            return response;
+        } catch (RestClientException ex) {
+            return emptyProductList();
+        }
+    }
+
+    /**
+     * Tạo một kết quả danh sách rỗng (0 sản phẩm) dùng khi API lỗi.
+     */
+    private ProductListResponse emptyProductList() {
+        ProductListResponse response = new ProductListResponse();
+        response.setProducts(Collections.emptyList());
+        response.setTotal(0);
+        return response;
+    }
+
+    /**
+     * Đóng gói request thành {@link HttpEntity} có header {@code Content-Type: application/json}.
+     */
+    private HttpEntity<ProductRequest> jsonEntity(ProductRequest request) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new HttpEntity<>(request, headers);
     }
 
 }
