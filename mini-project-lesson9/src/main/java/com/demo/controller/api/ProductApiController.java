@@ -6,10 +6,7 @@ import com.demo.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * REST API nội bộ đóng vai trò "Spring Proxy" cho thao tác ghi sản phẩm (thêm/sửa).
@@ -39,4 +36,16 @@ public class ProductApiController {
         return ResponseEntity.ok(product);
     }
 
+    /**
+     * Nhận yêu cầu cập nhật sản phẩm theo id (JSON body) và chuyển tiếp tới service.
+     *
+     * @return HTTP 200 kèm sản phẩm sau khi cập nhật
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> updateProduct(
+            @PathVariable long id,
+            @Valid @RequestBody ProductRequest request) {
+        Product product = productService.updateProduct(id, request);
+        return ResponseEntity.ok(product);
+    }
 }

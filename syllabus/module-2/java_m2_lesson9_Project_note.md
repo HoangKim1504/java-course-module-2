@@ -332,6 +332,12 @@ return                ↓
 | Hướng dẫn | Tạo 1 trang HTML với các textbox để sửa thông tin sản phẩm |
 | Gợi ý | Lấy id từ URL → gửi request lấy thông tin sản phẩm → đổ dữ liệu vào textbox → tạo hàm JS nhận dữ liệu → **xác thực dữ liệu** → nếu hợp lệ gửi request `PUT` tới nguồn dữ liệu → thành công thì hiển thị thông báo (có thể dùng `alert`) |
 
+**Kết quả:**
+
+![Function 6 - editProduct 1.png](../images/Lesson%209/Function%206%20-%20editProduct%201.png)
+![Function 6 - editProduct 2.png](img_1.png)
+![Function 6 - editProduct 3.png](img_2.png)
+
 #### Chức năng 7 — Xóa sản phẩm
 
 | Mục | Nội dung |

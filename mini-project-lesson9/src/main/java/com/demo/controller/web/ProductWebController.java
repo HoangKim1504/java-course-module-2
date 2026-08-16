@@ -114,6 +114,17 @@ public class ProductWebController {
     }
 
     /**
+     * Mở form sửa sản phẩm, đổ sẵn dữ liệu hiện tại của sản phẩm theo id vào form.
+     *
+     * @return template {@code product-edit}
+     */
+    @GetMapping("/product_edit")
+    public String productEdit(@RequestParam("id") long id, Model model) {
+        model.addAttribute("product", requireProduct(id));
+        return "product-edit";
+    }
+
+    /**
      * Tính toán và đẩy các thuộc tính phân trang/sắp xếp sang view (dùng chung cho home và search).
      */
     private void addPagingAttributes(Model model, ProductListResponse response, int page, int size, String sortBy, String order) {

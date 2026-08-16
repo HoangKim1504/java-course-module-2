@@ -7,6 +7,7 @@ import com.demo.model.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
@@ -133,6 +134,20 @@ public class ProductService {
     public Product addProduct(ProductRequest request) {
         HttpEntity<ProductRequest> entity = jsonEntity(request);
         return restTemplate.postForObject(BASE_URL + "/add", entity, Product.class);
+    }
+
+    /**
+     * Cập nhật một sản phẩm theo id bằng cách gửi {@code PUT /products/{id}} tới DummyJSON.
+     *
+     * <p>Lưu ý: DummyJSON chỉ giả lập việc cập nhật, dữ liệu không được lưu thật trên server.</p>
+     *
+     * @return sản phẩm sau khi cập nhật do API trả về
+     */
+    public Product updateProduct(long id, ProductRequest request) {
+        HttpEntity<ProductRequest> entity = jsonEntity(request);
+        return restTemplate
+                .exchange(BASE_URL + "/" + id, HttpMethod.PUT, entity, Product.class)
+                .getBody();
     }
 
     /**
