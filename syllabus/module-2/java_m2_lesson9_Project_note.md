@@ -58,74 +58,11 @@ Các ý tưởng dưới đây nằm ngoài phạm vi bài, dùng cho học viê
 ![Function 1 - getProductList 1.png](../images/Lesson%209/Function%201%20-%20getProductList%201.png)
 ![Function 1 - getProductList 2.png](../images/Lesson%209/Function%201%20-%20getProductList%202.png)
 
-Khi chuyển qua trang tiếp theo:
-![Function 1 - getProductList 3.png](../images/Lesson%209/Function%201%20-%20getProductList%203.png)
-![Function 1 - getProductList 4.png](../images/Lesson%209/Function%201%20-%20getProductList%204.png)
-
 **Note:**
 
 <details>
 
-### 1. Phân trang với `limit` và `skip`
-
-```java
-int skip = Math.max(page - 1, 0) * size;
-
-UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(baseUrl)
-        .queryParam("limit", size)
-        .queryParam("skip", skip);
-```
-
-* `page`: trang hiện tại.
-* `size`: số sản phẩm mỗi trang.
-* `skip`: số sản phẩm cần bỏ qua.
-
-Công thức:
-
-```text
-skip = (page - 1) * size
-```
-
-Ví dụ:
-
-```text
-page = 3
-size = 10
-
-skip = 20
-```
-
-URL:
-
-```text
-/products?limit=10&skip=20
-```
-
-→ Bỏ qua 20 sản phẩm đầu và lấy 10 sản phẩm tiếp theo.
-
-`Math.max(page - 1, 0)` giúp đảm bảo `skip` không bị âm.
-
----
-
-### 2. Tạo URL bằng `UriComponentsBuilder`
-
-```java
-UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(baseUrl)
-        .queryParam("limit", size)
-        .queryParam("skip", skip);
-```
-
-Dùng để tạo URL có query parameter an toàn và dễ đọc.
-
-Ví dụ:
-
-```text
-https://api.example.com/products?limit=10&skip=20
-```
-
----
-
-### 3. Gọi API bằng `RestTemplate`
+### 1. Gọi API bằng `RestTemplate`
 
 ```java
 ProductListResponse response =
@@ -150,7 +87,7 @@ ProductListResponse
 
 ---
 
-### 4. Lỗi thiếu `RestTemplate` Bean
+### 2. Lỗi thiếu `RestTemplate` Bean
 
 Lỗi:
 
@@ -169,7 +106,7 @@ public ProductService(RestTemplate restTemplate)
 
 ---
 
-### 5. Tạo `RestTemplate` Bean
+### 3. Tạo `RestTemplate` Bean
 
 Config cuối cùng:
 
@@ -217,7 +154,7 @@ factory.setReadTimeout(Duration.ofSeconds(10));
 
 ---
 
-### 6. Inject vào `ProductService`
+### 4. Inject vào `ProductService`
 
 ```java
 private final RestTemplate restTemplate;
@@ -408,6 +345,76 @@ return                ↓
 | Hướng dẫn | Chia danh sách theo trang; hiển thị nút **Trước / Sau** và "Trang X / Y" |
 | Gợi ý | `skip = (page - 1) * size`; tổng số trang = `ceil(total / size)` |
 
+<details>
+
+### 1. Phân trang với `limit` và `skip`
+
+```java
+int skip = Math.max(page - 1, 0) * size;
+
+UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(baseUrl)
+        .queryParam("limit", size)
+        .queryParam("skip", skip);
+```
+
+* `page`: trang hiện tại.
+* `size`: số sản phẩm mỗi trang.
+* `skip`: số sản phẩm cần bỏ qua.
+
+Công thức:
+
+```text
+skip = (page - 1) * size
+```
+
+Ví dụ:
+
+```text
+page = 3
+size = 10
+
+skip = 20
+```
+
+URL:
+
+```text
+/products?limit=10&skip=20
+```
+
+→ Bỏ qua 20 sản phẩm đầu và lấy 10 sản phẩm tiếp theo.
+
+`Math.max(page - 1, 0)` giúp đảm bảo `skip` không bị âm.
+
+---
+
+### 2. Tạo URL bằng `UriComponentsBuilder`
+
+```java
+UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(baseUrl)
+        .queryParam("limit", size)
+        .queryParam("skip", skip);
+```
+
+Dùng để tạo URL có query parameter an toàn và dễ đọc.
+
+Ví dụ:
+
+```text
+https://api.example.com/products?limit=10&skip=20
+```
+
+</details>
+
+**Note:**
+
+Khi chuyển qua trang tiếp theo:
+![Function 8 - product pagination 1.png](../images/Lesson%209/Function%208%20-%20product%20pagination%201.png)
+![Function 8 - product pagination 2.png](../images/Lesson%209/Function%208%20-%20product%20pagination%202.png)
+
+Khi chuyển qua trang cuối:
+![Function 8 - product pagination 3.png](../images/Lesson%209/Function%208%20-%20product%20pagination%203.png)
+
 #### Chức năng 9 — Sắp xếp sản phẩm
 
 | Mục | Nội dung |
@@ -416,6 +423,13 @@ return                ↓
 | Nguồn dữ liệu (API) | [products-sort](https://dummyjson.com/docs/products#products-sort) |
 | Hướng dẫn | Form chọn tiêu chí (Tên / Giá / Đánh giá) và thứ tự (Tăng / Giảm); áp dụng cho cả trang chủ và tìm kiếm |
 | Gợi ý | Truyền `sortBy`/`order` xuống DummyJSON; giữ nguyên nhóm đang lọc khi đổi sắp xếp |
+
+**Kết quả:**
+
+Khi sắp xếp theo "Tên" và thứ tự "Tăng dần":
+![Function 9 - filter, sort products 1.png](../images/Lesson%209/Function%209%20-%20filter,%20sort%20products%201.png)
+Khi sắp xếp theo "Tên" và thứ tự "Giảm dần":
+![Function 9 - filter, sort products 2.png](../images/Lesson%209/Function%209%20-%20filter,%20sort%20products%202.png)
 
 #### Chức năng 10 — Lọc theo nhóm
 
@@ -426,6 +440,10 @@ return                ↓
 | Hướng dẫn | Bấm 1 nhóm ở trang Category để xem sản phẩm thuộc nhóm đó; có nút **Bỏ lọc nhóm** |
 | Gợi ý | Service gọi `/products/category/{slug}`; kết hợp được với sắp xếp & phân trang |
 
+**Kết quả:**
+
+![Function 10 - sortByCategory 1.png](../images/Lesson%209/Function%2010%20-%20sortByCategory%201.png)
+
 #### Chức năng 11 — Validation phía server
 
 | Mục | Nội dung |
@@ -434,6 +452,10 @@ return                ↓
 | Nguồn dữ liệu (API) | (nội bộ — Spring Proxy) |
 | Hướng dẫn | Kiểm tra dữ liệu trên server bằng Bean Validation, chặn được cả khi người dùng tắt JavaScript hoặc gọi thẳng API |
 | Gợi ý | `@Valid` + `@NotBlank`/`@NotNull`/`@DecimalMin`/`@DecimalMax`; lỗi trả JSON `400` để JS hiển thị tại từng ô |
+
+**Kết quả:**
+
+![Function 11 - validation 1.png](../images/Lesson%209/Function%2011%20-%20validation%201.png)
 
 #### Chức năng 12 — Trang lỗi thân thiện
 
