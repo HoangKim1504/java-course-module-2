@@ -335,8 +335,8 @@ return                ↓
 **Kết quả:**
 
 ![Function 6 - editProduct 1.png](../images/Lesson%209/Function%206%20-%20editProduct%201.png)
-![Function 6 - editProduct 2.png](img_1.png)
-![Function 6 - editProduct 3.png](img_2.png)
+![Function 6 - editProduct 2.png](../images/Lesson%209/Function%206%20-%20editProduct%202.png)
+![Function 6 - editProduct 3.png](../images/Lesson%209/Function%206%20-%20editProduct%203.png)
 
 #### Chức năng 7 — Xóa sản phẩm
 
@@ -349,8 +349,8 @@ return                ↓
 
 **Kết quả:**
 
-![Function 7 - deleteProduct 1.png](img.png)
-![Function 7 - deleteProduct 2.png](img_1.png)
+![Function 7 - deleteProduct 1.png](../images/Lesson%209/Function%207%20-%20deleteProduct%201.png)
+![Function 7 - deleteProduct 2.png](../images/Lesson%209/Function%207%20-%20deleteProduct%202.png)
 
 #### Chức năng 8 — Phân trang danh sách
 
