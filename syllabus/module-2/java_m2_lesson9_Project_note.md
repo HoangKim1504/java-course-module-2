@@ -482,6 +482,246 @@ Khi sắp xếp theo "Tên" và thứ tự "Giảm dần":
 | Hướng dẫn | Hiển thị trang 404 khi không tìm thấy sản phẩm; trang 500 khi lỗi hệ thống / gọi API thất bại |
 | Gợi ý | `@ControllerAdvice` (web) + `@RestControllerAdvice` (API); ném `ProductNotFoundException` khi id không tồn tại |
 
+<details>
+
+### 1. Toàn bộ luồng xử lý lỗi
+
+```text
+REQUEST
+   ↓
+Controller
+   ↓
+Service
+   ↓
+Gọi External API
+   ↓
+Có lỗi?
+ ┌───────────────┐
+ │               │
+Không            Có
+ │               │
+ ↓               ↓
+Trả dữ liệu   Throw Exception
+                  ↓
+        ┌─────────┴─────────┐
+        │                   │
+      Web MVC             REST API
+        │                   │
+        ↓                   ↓
+@ControllerAdvice   @RestControllerAdvice
+        │                   │
+        ↓                   ↓
+   Trả HTML              Trả JSON
+        │
+   ┌────┴────┐
+   │         │
+  404       500
+   │         │
+   ↓         ↓
+error/404  error/500
+```
+
+#### Luồng 404
+
+```text
+GET /product_detail?id=999
+        ↓
+ProductController
+        ↓
+ProductService
+        ↓
+Gọi API sản phẩm
+        ↓
+API trả 404
+        ↓
+ProductNotFoundException
+        ↓
+@ControllerAdvice
+        ↓
+handleProductNotFound()
+        ↓
+return "error/404"
+        ↓
+templates/error/404.html
+```
+
+#### Luồng 500
+
+```text
+Controller
+    ↓
+Service
+    ↓
+Gọi External API
+    ↓
+Timeout / lỗi kết nối / lỗi hệ thống
+    ↓
+Exception
+    ↓
+@ControllerAdvice
+    ↓
+@ExceptionHandler(Exception.class)
+    ↓
+return "error/500"
+    ↓
+templates/error/500.html
+```
+
+#### Luồng REST API
+
+```text
+POST / PUT / DELETE /api/products/...
+        ↓
+REST Controller
+        ↓
+Service
+        ↓
+Có lỗi
+        ↓
+Exception
+        ↓
+@RestControllerAdvice
+        ↓
+Trả HTTP status + JSON
+```
+
+Ví dụ:
+
+```json
+{
+  "status": 404,
+  "message": "Không tìm thấy sản phẩm có ID: 999"
+}
+```
+
+#### Ghi nhớ
+
+```text
+@ControllerAdvice
+→ xử lý lỗi cho Web MVC
+→ trả về trang Thymeleaf
+
+@RestControllerAdvice
+→ xử lý lỗi cho REST API
+→ trả về JSON
+
+ProductNotFoundException
+→ dùng cho trường hợp sản phẩm không tồn tại
+→ thường trả HTTP 404
+
+Exception
+→ dùng cho lỗi hệ thống chung
+→ thường trả HTTP 500
+```
+
+### 2. `@ControllerAdvice` và `@RestControllerAdvice`
+
+* Không cần gọi `ApiExceptionHandler` hoặc `WebExceptionHandler` bằng tay.
+* Khi Controller/Service phát sinh `Exception`, Spring sẽ tự tìm `@ExceptionHandler` phù hợp để xử lý.
+
+```text
+Request
+   ↓
+Controller
+   ↓
+Service
+   ↓
+Có Exception
+   ↓
+Spring tự bắt
+   ↓
+Tìm @ExceptionHandler phù hợp
+```
+
+#### Về `@RestControllerAdvice`:
+
+Dùng cho REST API.
+
+```java
+@RestControllerAdvice
+public class ApiExceptionHandler {
+}
+```
+
+Luồng:
+
+```text
+API Controller
+    ↓
+Exception
+    ↓
+ApiExceptionHandler
+    ↓
+Trả JSON + HTTP Status
+```
+
+Ví dụ:
+
+```json
+{
+  "error": "Không tìm thấy sản phẩm"
+}
+```
+
+#### Về `@ControllerAdvice`:
+
+Dùng cho Web MVC / Thymeleaf.
+
+```java
+@ControllerAdvice
+public class WebExceptionHandler {
+}
+```
+
+Luồng:
+
+```text
+Web Controller
+    ↓
+Exception
+    ↓
+WebExceptionHandler
+    ↓
+Trả trang HTML
+```
+
+Ví dụ:
+
+```java
+return "error/404";
+```
+
+#### Về `@ExceptionHandler`:
+
+Xác định loại lỗi mà method sẽ xử lý.
+
+```java
+@ExceptionHandler(ProductNotFoundException.class)
+```
+
+Có thể hiểu là:
+
+> Nếu gặp `ProductNotFoundException` thì chạy method này.
+
+#### Ghi nhớ
+
+```text
+@RestControllerAdvice → API → JSON
+
+@ControllerAdvice     → Web → HTML
+
+@ExceptionHandler     → xác định Exception cần bắt
+
+Spring tự gọi Handler khi có lỗi.
+```
+
+</details>
+
+**Kết quả:**
+
+![Function 12 - error 404 page 1.png](../images/Lesson%209/Function%2012%20-%20error%20404%20page%201.png)
+
+
 ### 1.4. Yêu cầu xác thực dữ liệu (form Thêm / Sửa)
 
 - Tất cả textbox **không được rỗng**
